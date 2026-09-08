@@ -1,0 +1,12 @@
+.DS_Store
+Thumbs.db
+*.log
+.idea/
+.vscode/
+storage/*.sqlite*
+storage/.app_key
+assets/uploads/*
+!assets/uploads/.gitkeep
+!assets/uploads/banners/
+assets/uploads/banners/*
+!assets/uploads/banners/.gitkeep

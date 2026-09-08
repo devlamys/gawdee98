@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head><base href="/admin/">
+    <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#073c2b">
+    <title>Command centre · Gawdee Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css"><link rel="stylesheet" href="assets/admin.css?v=1788870561"><link rel="stylesheet" href="assets/admin-modern.css?v=1788863362">
+</head>
+<body>
+<div class="admin-app" data-admin-app>
+    <aside class="admin-sidebar">
+        <a class="admin-logo" href="../index.php"><img src="../assets/images/logo.png" alt="Gawdee"></a>
+        <nav class="admin-nav" aria-label="Admin navigation">
+            <div class="admin-nav__group"><span>Operate</span><a class="is-active" href="?view=dashboard"><i class="ph ph-squares-four"></i>Command centre</a><a class="" href="?view=orders"><i class="ph ph-receipt"></i>Orders</a><a class="" href="?view=inventory"><i class="ph ph-warehouse"></i>Inventory</a><a class="" href="?view=customers"><i class="ph ph-users-three"></i>Customers</a></div><div class="admin-nav__group"><span>Catalogue</span><a class="" href="?view=products"><i class="ph ph-package"></i>Products</a><a class="" href="?view=reviews"><i class="ph ph-star"></i>Product reviews</a></div><div class="admin-nav__group"><span>Storefront</span><a class="" href="?view=storefront"><i class="ph ph-squares-four"></i>Collections & combos</a><a class="" href="?view=site-design"><i class="ph ph-paint-brush"></i>Brand & pages</a><a class="" href="?view=banners"><i class="ph ph-image"></i>Hero banners</a><a class="" href="?view=cms"><i class="ph ph-layout"></i>Homepage CMS</a><a class="" href="?view=section-items"><i class="ph ph-list-bullets"></i>Section items</a><a class="" href="?view=testimonials"><i class="ph ph-quotes"></i>Homepage reviews</a><a class="" href="?view=video-testimonials"><i class="ph ph-play-circle"></i>Video testimonials</a><a class="" href="?view=media"><i class="ph ph-video-camera"></i>Homepage media</a><a class="" href="?view=blog"><i class="ph ph-article"></i>Blog</a></div><div class="admin-nav__group"><span>System</span><a class="" href="?view=ai"><i class="ph ph-sparkle"></i>AI studio</a><a class="" href="?view=integrations"><i class="ph ph-plugs-connected"></i>Integrations</a><a class="" href="?view=settings"><i class="ph ph-sliders-horizontal"></i>Settings</a></div>        </nav>
+        <div class="admin-sidebar__footer"><strong>Preview Administrator</strong><span>preview@example.test</span><a href="logout.php"><i class="ph ph-sign-out"></i> Sign out</a></div>
+    </aside>
+    <main class="admin-main">
+        <header class="admin-topbar">
+            <div class="admin-topbar__start">
+                <button class="admin-action-icon mobile-admin-toggle" type="button" data-admin-menu aria-label="Open admin navigation" aria-expanded="false"><i class="ph ph-list"></i></button>
+                <form class="admin-command-search" data-admin-command-search role="search">
+                    <i class="ph ph-magnifying-glass" aria-hidden="true"></i>
+                    <label class="admin-sr-only" for="admin-command-input">Search admin sections</label>
+                    <input id="admin-command-input" type="search" placeholder="Search orders, products, customers…" autocomplete="off" data-admin-command-input>
+                    <kbd>Ctrl K</kbd>
+                </form>
+            </div>
+            <div class="admin-topbar__actions">
+                <a class="admin-store-link" href="../index.php" target="_blank"><i class="ph ph-storefront"></i><span>View Store</span></a>
+                <a class="admin-notification" href="?view=orders&status=on_hold" aria-label="No order alerts"><i class="ph ph-bell"></i></a>
+                <div class="admin-user-chip"><span class="admin-user-chip__avatar">PA</span><span><strong>Preview Administrator</strong><small>Administrator</small></span><a href="logout.php" aria-label="Sign out"><i class="ph ph-sign-out"></i></a></div>
+            </div>
+        </header>
+        <div class="admin-content">
+            
+                            
+<section class="command-hero">
+    <div><span class="section-kicker">Live commerce overview</span><h2>Welcome back, Preview!</h2><p>Here’s what is happening across Gawdee today.</p></div>
+    <div class="command-hero__actions"><span class="command-date"><i class="ph ph-calendar-blank"></i>Sep 2, 2026 – Sep 8, 2026</span><a class="admin-button admin-button--gold" href="?view=orders&new=1"><i class="ph ph-plus"></i> Create order</a></div>
+</section>
+
+<div class="command-stat-grid">
+    <article class="command-stat"><div><span>Revenue this month</span><i class="ph ph-currency-inr"></i></div><strong>₹0</strong><small class="is-up">First recorded month</small></article>
+    <article class="command-stat"><div><span>Orders today</span><i class="ph ph-shopping-bag"></i></div><strong>0</strong><small>0 orders all time</small></article>
+    <article class="command-stat"><div><span>To pack or ship</span><i class="ph ph-package"></i></div><strong>0</strong><small><a href="?view=orders&status=processing">Open fulfilment queue <i class="ph ph-arrow-right"></i></a></small></article>
+    <article class="command-stat "><div><span>Needs attention</span><i class="ph ph-warning-circle"></i></div><strong>0</strong><small><a href="?view=orders&status=on_hold">Review flagged orders <i class="ph ph-arrow-right"></i></a></small></article>
+</div>
+
+<div class="command-layout">
+    <section class="admin-card revenue-card">
+        <div class="admin-card__header"><div><span class="section-kicker">Performance</span><h2>14-day revenue</h2><p>Paid orders only</p></div><div class="revenue-card__summary"><strong>₹0</strong><span>0 orders</span></div></div>
+        <div class="revenue-chart" role="img" aria-label="Paid revenue for the last 14 days">
+            <div class="revenue-chart__day" title="26 Aug: ₹0"><span><i style="height:4%"></i></span><small>26</small></div><div class="revenue-chart__day" title="27 Aug: ₹0"><span><i style="height:4%"></i></span><small>27</small></div><div class="revenue-chart__day" title="28 Aug: ₹0"><span><i style="height:4%"></i></span><small>28</small></div><div class="revenue-chart__day" title="29 Aug: ₹0"><span><i style="height:4%"></i></span><small>29</small></div><div class="revenue-chart__day" title="30 Aug: ₹0"><span><i style="height:4%"></i></span><small>30</small></div><div class="revenue-chart__day" title="31 Aug: ₹0"><span><i style="height:4%"></i></span><small>31</small></div><div class="revenue-chart__day" title="1 Sep: ₹0"><span><i style="height:4%"></i></span><small>1</small></div><div class="revenue-chart__day" title="2 Sep: ₹0"><span><i style="height:4%"></i></span><small>2</small></div><div class="revenue-chart__day" title="3 Sep: ₹0"><span><i style="height:4%"></i></span><small>3</small></div><div class="revenue-chart__day" title="4 Sep: ₹0"><span><i style="height:4%"></i></span><small>4</small></div><div class="revenue-chart__day" title="5 Sep: ₹0"><span><i style="height:4%"></i></span><small>5</small></div><div class="revenue-chart__day" title="6 Sep: ₹0"><span><i style="height:4%"></i></span><small>6</small></div><div class="revenue-chart__day" title="7 Sep: ₹0"><span><i style="height:4%"></i></span><small>7</small></div><div class="revenue-chart__day" title="8 Sep: ₹0"><span><i style="height:4%"></i></span><small>8</small></div>        </div>
+        <div class="revenue-chart__legend"><span>26 Aug</span><span>Hover a bar for daily revenue</span><span>Today</span></div>
+    </section>
+
+    <section class="admin-card pipeline-card">
+        <div class="admin-card__header"><div><span class="section-kicker">Operations</span><h2>Fulfilment pipeline</h2><p>Current order workload</p></div></div>
+        <div class="pipeline-list"><a href="?view=orders&status=processing"><i class="ph ph-check-circle"></i><span><strong>Confirmed</strong><em><b style="width:0%"></b></em></span><b>0</b></a><a href="?view=orders&status=packed"><i class="ph ph-package"></i><span><strong>Packed</strong><em><b style="width:0%"></b></em></span><b>0</b></a><a href="?view=orders&status=shipped"><i class="ph ph-truck"></i><span><strong>In transit</strong><em><b style="width:0%"></b></em></span><b>0</b></a><a href="?view=orders&status=delivered"><i class="ph ph-house-line"></i><span><strong>Delivered</strong><em><b style="width:0%"></b></em></span><b>0</b></a></div>
+    </section>
+</div>
+
+<nav class="dashboard-quick-actions" aria-label="Quick actions">
+    <a href="?view=products&edit=new"><i class="ph ph-cube"></i><span>Add Product</span></a>
+    <a href="?view=orders&new=1"><i class="ph ph-receipt"></i><span>Create Order</span></a>
+    <a href="?view=orders"><i class="ph ph-shopping-cart"></i><span>View Orders</span></a>
+    <a href="?view=inventory"><i class="ph ph-stack"></i><span>Inventory</span></a>
+    <a href="?view=customers"><i class="ph ph-user-circle"></i><span>Customers</span></a>
+    <a href="?view=blog&edit=-1"><i class="ph ph-article"></i><span>New Blog Post</span></a>
+</nav>
+
+<div class="command-bottom-grid">
+    <section class="admin-card"><div class="admin-card__header"><div><span class="section-kicker">Latest activity</span><h2>Recent orders</h2></div><a class="text-link" href="?view=orders">View all <i class="ph ph-arrow-right"></i></a></div><div class="empty-state"><i class="ph ph-shopping-bag-open"></i><h3>No orders yet</h3><p>Your first checkout will appear here immediately.</p></div></section>
+
+    <div class="command-side-stack">
+        <section class="admin-card stock-watch-card"><div class="admin-card__header"><div><span class="section-kicker">Stock watch</span><h2>Low inventory</h2></div><a class="text-link" href="?view=inventory">Inventory <i class="ph ph-arrow-right"></i></a></div><div class="mini-empty"><i class="ph ph-check-circle"></i><span><strong>Stock levels look healthy</strong>No active product is below 12 units.</span></div></section>
+        <section class="system-strip"><span><i class="ph ph-storefront"></i><strong>8</strong> live products</span><span><i class="ph ph-users"></i><strong>0</strong> customers</span><span><i class="ph ph-receipt"></i><strong>₹0</strong> average order</span></section>
+    </div>
+</div>
+
+                
+                    </div>
+    </main>
+</div>
+<script src="assets/admin.js" defer></script>
+<script src="assets/content-editor.js" defer></script>
+</body>
+</html>

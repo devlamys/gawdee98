@@ -1,0 +1,1302 @@
+<!doctype html>
+<html lang="en">
+<head><base href="/admin/">
+    <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#073c2b">
+    <title>Collections &amp; combos · Gawdee Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css"><link rel="stylesheet" href="assets/admin.css?v=1788870561"><link rel="stylesheet" href="assets/admin-modern.css?v=1788863362">
+</head>
+<body>
+<div class="admin-app" data-admin-app>
+    <aside class="admin-sidebar">
+        <a class="admin-logo" href="../index.php"><img src="../assets/images/logo.png" alt="Gawdee"></a>
+        <nav class="admin-nav" aria-label="Admin navigation">
+            <div class="admin-nav__group"><span>Operate</span><a class="" href="?view=dashboard"><i class="ph ph-squares-four"></i>Command centre</a><a class="" href="?view=orders"><i class="ph ph-receipt"></i>Orders</a><a class="" href="?view=inventory"><i class="ph ph-warehouse"></i>Inventory</a><a class="" href="?view=customers"><i class="ph ph-users-three"></i>Customers</a></div><div class="admin-nav__group"><span>Catalogue</span><a class="" href="?view=products"><i class="ph ph-package"></i>Products</a><a class="" href="?view=reviews"><i class="ph ph-star"></i>Product reviews</a></div><div class="admin-nav__group"><span>Storefront</span><a class="is-active" href="?view=storefront"><i class="ph ph-squares-four"></i>Collections & combos</a><a class="" href="?view=site-design"><i class="ph ph-paint-brush"></i>Brand & pages</a><a class="" href="?view=banners"><i class="ph ph-image"></i>Hero banners</a><a class="" href="?view=cms"><i class="ph ph-layout"></i>Homepage CMS</a><a class="" href="?view=section-items"><i class="ph ph-list-bullets"></i>Section items</a><a class="" href="?view=testimonials"><i class="ph ph-quotes"></i>Homepage reviews</a><a class="" href="?view=video-testimonials"><i class="ph ph-play-circle"></i>Video testimonials</a><a class="" href="?view=media"><i class="ph ph-video-camera"></i>Homepage media</a><a class="" href="?view=blog"><i class="ph ph-article"></i>Blog</a></div><div class="admin-nav__group"><span>System</span><a class="" href="?view=ai"><i class="ph ph-sparkle"></i>AI studio</a><a class="" href="?view=integrations"><i class="ph ph-plugs-connected"></i>Integrations</a><a class="" href="?view=settings"><i class="ph ph-sliders-horizontal"></i>Settings</a></div>        </nav>
+        <div class="admin-sidebar__footer"><strong>Preview Administrator</strong><span>preview@example.test</span><a href="logout.php"><i class="ph ph-sign-out"></i> Sign out</a></div>
+    </aside>
+    <main class="admin-main">
+        <header class="admin-topbar">
+            <div class="admin-topbar__start">
+                <button class="admin-action-icon mobile-admin-toggle" type="button" data-admin-menu aria-label="Open admin navigation" aria-expanded="false"><i class="ph ph-list"></i></button>
+                <form class="admin-command-search" data-admin-command-search role="search">
+                    <i class="ph ph-magnifying-glass" aria-hidden="true"></i>
+                    <label class="admin-sr-only" for="admin-command-input">Search admin sections</label>
+                    <input id="admin-command-input" type="search" placeholder="Search orders, products, customers…" autocomplete="off" data-admin-command-input>
+                    <kbd>Ctrl K</kbd>
+                </form>
+            </div>
+            <div class="admin-topbar__actions">
+                <a class="admin-store-link" href="../index.php" target="_blank"><i class="ph ph-storefront"></i><span>View Store</span></a>
+                <a class="admin-notification" href="?view=orders&status=on_hold" aria-label="No order alerts"><i class="ph ph-bell"></i></a>
+                <div class="admin-user-chip"><span class="admin-user-chip__avatar">PA</span><span><strong>Preview Administrator</strong><small>Administrator</small></span><a href="logout.php" aria-label="Sign out"><i class="ph ph-sign-out"></i></a></div>
+            </div>
+        </header>
+        <div class="admin-content">
+            
+                            <div class="admin-section-title"><div><h2>Storefront collections</h2><p>Manage navigation, category cards, bestsellers, complete combo packs and quality cards.</p></div><a class="admin-button admin-button--secondary" href="?view=cms">Section titles & visibility <i class="ph ph-arrow-right"></i></a></div>
+<section class="admin-card"><div class="admin-card__body"><details><summary>Product IDs for combo packs</summary><div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Product</th><th>ID</th><th>Status</th></tr></thead><tbody><tr><td>Gawdee Gir Cow A2 Ghee 500ml</td><td><code>ghee-500</code></td><td>Active</td></tr><tr><td>Gawdee Burra Sugar 1kg</td><td><code>burra-sugar</code></td><td>Active</td></tr><tr><td>Gawdee MixMe — Choco 500g</td><td><code>mixme-choco</code></td><td>Active</td></tr><tr><td>Gawdee MixMe — Elaichi 500g</td><td><code>mixme-elaichi</code></td><td>Active</td></tr><tr><td>Gawdee Moringa Powder 300g</td><td><code>moringa</code></td><td>Active</td></tr><tr><td>Gawdee Raw Wild Forest Honey 650g</td><td><code>forest-honey</code></td><td>Active</td></tr><tr><td>Gawdee Sulphur-Free White Sugar 1kg</td><td><code>white-sugar</code></td><td>Active</td></tr><tr><td>Gawdee Taral Drop 30ml</td><td><code>taral-drop</code></td><td>Active</td></tr></tbody></table></div></details></div></section>
+<form method="post" enctype="multipart/form-data" class="admin-form">
+    <input type="hidden" name="csrf_token" value="312608e55ceb816466a7b1d2d9d96144a10d68b514c17916">
+    <input type="hidden" name="action" value="save_collections">
+        <section class="admin-card"><div class="admin-card__header"><div><h2>Footer_shop</h2><p>Edit a card below or add another. Use Up and Down to change its order.</p></div><button type="button" class="admin-button admin-button--secondary" data-collection-add="footer_shop">Add row <i class="ph ph-plus"></i></button></div>
+        <div class="admin-card__body" data-collection-rows="footer_shop">
+                        <fieldset class="collection-editor" >
+                <legend>Footer_shop item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="footer_shop[0][title]" value="All Products">
+                                                                                                </label><label class=""><span>Url</span>
+                    <input name="footer_shop[0][url]" value="products.php">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="footer_shop[0][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Footer_shop item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="footer_shop[1][title]" value="Bestsellers">
+                                                                                                </label><label class=""><span>Url</span>
+                    <input name="footer_shop[1][url]" value="index.php#shop">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="footer_shop[1][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Footer_shop item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="footer_shop[2][title]" value="New Arrivals">
+                                                                                                </label><label class=""><span>Url</span>
+                    <input name="footer_shop[2][url]" value="products.php?sort=newest">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="footer_shop[2][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Footer_shop item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="footer_shop[3][title]" value="Combo Deals">
+                                                                                                </label><label class=""><span>Url</span>
+                    <input name="footer_shop[3][url]" value="index.php#offers">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="footer_shop[3][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Footer_shop item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="footer_shop[4][title]" value="Wishlist">
+                                                                                                </label><label class=""><span>Url</span>
+                    <input name="footer_shop[4][url]" value="wishlist.php">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="footer_shop[4][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" data-collection-template hidden disabled>
+                <legend>Footer_shop item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="footer_shop[5][title]" value="">
+                                                                                                </label><label class=""><span>Url</span>
+                    <input name="footer_shop[5][url]" value="">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="footer_shop[5][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                    </div>
+    </section>
+        <section class="admin-card"><div class="admin-card__header"><div><h2>Footer_about</h2><p>Edit a card below or add another. Use Up and Down to change its order.</p></div><button type="button" class="admin-button admin-button--secondary" data-collection-add="footer_about">Add row <i class="ph ph-plus"></i></button></div>
+        <div class="admin-card__body" data-collection-rows="footer_about">
+                        <fieldset class="collection-editor" >
+                <legend>Footer_about item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="footer_about[0][title]" value="Our Story">
+                                                                                                </label><label class=""><span>Url</span>
+                    <input name="footer_about[0][url]" value="index.php#about">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="footer_about[0][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Footer_about item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="footer_about[1][title]" value="Our Farms">
+                                                                                                </label><label class=""><span>Url</span>
+                    <input name="footer_about[1][url]" value="index.php#farms">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="footer_about[1][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Footer_about item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="footer_about[2][title]" value="Quality Promise">
+                                                                                                </label><label class=""><span>Url</span>
+                    <input name="footer_about[2][url]" value="index.php#quality-promise">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="footer_about[2][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Footer_about item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="footer_about[3][title]" value="Journal">
+                                                                                                </label><label class=""><span>Url</span>
+                    <input name="footer_about[3][url]" value="blog.php">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="footer_about[3][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" data-collection-template hidden disabled>
+                <legend>Footer_about item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="footer_about[4][title]" value="">
+                                                                                                </label><label class=""><span>Url</span>
+                    <input name="footer_about[4][url]" value="">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="footer_about[4][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                    </div>
+    </section>
+        <section class="admin-card"><div class="admin-card__header"><div><h2>Footer_help</h2><p>Edit a card below or add another. Use Up and Down to change its order.</p></div><button type="button" class="admin-button admin-button--secondary" data-collection-add="footer_help">Add row <i class="ph ph-plus"></i></button></div>
+        <div class="admin-card__body" data-collection-rows="footer_help">
+                        <fieldset class="collection-editor" >
+                <legend>Footer_help item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="footer_help[0][title]" value="Track Order">
+                                                                                                </label><label class=""><span>Url</span>
+                    <input name="footer_help[0][url]" value="account.php">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="footer_help[0][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Footer_help item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="footer_help[1][title]" value="Shipping &amp; Delivery">
+                                                                                                </label><label class=""><span>Url</span>
+                    <input name="footer_help[1][url]" value="page.php?slug=shipping">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="footer_help[1][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Footer_help item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="footer_help[2][title]" value="Returns &amp; Refunds">
+                                                                                                </label><label class=""><span>Url</span>
+                    <input name="footer_help[2][url]" value="page.php?slug=returns">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="footer_help[2][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Footer_help item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="footer_help[3][title]" value="Contact Us">
+                                                                                                </label><label class=""><span>Url</span>
+                    <input name="footer_help[3][url]" value="page.php?slug=contact">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="footer_help[3][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" data-collection-template hidden disabled>
+                <legend>Footer_help item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="footer_help[4][title]" value="">
+                                                                                                </label><label class=""><span>Url</span>
+                    <input name="footer_help[4][url]" value="">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="footer_help[4][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                    </div>
+    </section>
+        <section class="admin-card"><div class="admin-card__header"><div><h2>Navigation</h2><p>Edit a card below or add another. Use Up and Down to change its order.</p></div><button type="button" class="admin-button admin-button--secondary" data-collection-add="navigation">Add row <i class="ph ph-plus"></i></button></div>
+        <div class="admin-card__body" data-collection-rows="navigation">
+                        <fieldset class="collection-editor" >
+                <legend>Navigation item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="navigation[0][title]" value="Home">
+                                                                                                </label><label class=""><span>Url</span>
+                    <input name="navigation[0][url]" value="index.php">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="navigation[0][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Navigation item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="navigation[1][title]" value="A2 Ghee">
+                                                                                                </label><label class=""><span>Url</span>
+                    <input name="navigation[1][url]" value="products.php?category=ghee">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="navigation[1][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Navigation item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="navigation[2][title]" value="Natural Honey">
+                                                                                                </label><label class=""><span>Url</span>
+                    <input name="navigation[2][url]" value="products.php?category=honey">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="navigation[2][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Navigation item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="navigation[3][title]" value="Organic Foods">
+                                                                                                </label><label class=""><span>Url</span>
+                    <input name="navigation[3][url]" value="products.php?category=sugar">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="navigation[3][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Navigation item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="navigation[4][title]" value="Wellness">
+                                                                                                </label><label class=""><span>Url</span>
+                    <input name="navigation[4][url]" value="products.php?category=wellness">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="navigation[4][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Navigation item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="navigation[5][title]" value="Our Farms">
+                                                                                                </label><label class=""><span>Url</span>
+                    <input name="navigation[5][url]" value="index.php#farms">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="navigation[5][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Navigation item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="navigation[6][title]" value="About Us">
+                                                                                                </label><label class=""><span>Url</span>
+                    <input name="navigation[6][url]" value="index.php#about">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="navigation[6][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" data-collection-template hidden disabled>
+                <legend>Navigation item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="navigation[7][title]" value="">
+                                                                                                </label><label class=""><span>Url</span>
+                    <input name="navigation[7][url]" value="">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="navigation[7][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                    </div>
+    </section>
+        <section class="admin-card"><div class="admin-card__header"><div><h2>Header_benefits</h2><p>Edit a card below or add another. Use Up and Down to change its order.</p></div><button type="button" class="admin-button admin-button--secondary" data-collection-add="header_benefits">Add row <i class="ph ph-plus"></i></button></div>
+        <div class="admin-card__body" data-collection-rows="header_benefits">
+                        <fieldset class="collection-editor" >
+                <legend>Header_benefits item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="header_benefits[0][title]" value="Pure. Natural. Trusted.">
+                                                                                                </label><label class=""><span>Icon</span>
+                    <input name="header_benefits[0][icon]" value="ph-leaf">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="header_benefits[0][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Header_benefits item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="header_benefits[1][title]" value="100% A2 Ghee">
+                                                                                                </label><label class=""><span>Icon</span>
+                    <input name="header_benefits[1][icon]" value="ph-cow">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="header_benefits[1][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Header_benefits item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="header_benefits[2][title]" value="No Preservatives">
+                                                                                                </label><label class=""><span>Icon</span>
+                    <input name="header_benefits[2][icon]" value="ph-leaf">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="header_benefits[2][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Header_benefits item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="header_benefits[3][title]" value="Handcrafted on Indian Farms">
+                                                                                                </label><label class=""><span>Icon</span>
+                    <input name="header_benefits[3][icon]" value="ph-hand-heart">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="header_benefits[3][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Header_benefits item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="header_benefits[4][title]" value="Plastic Neutral">
+                                                                                                </label><label class=""><span>Icon</span>
+                    <input name="header_benefits[4][icon]" value="ph-recycle">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="header_benefits[4][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Header_benefits item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="header_benefits[5][title]" value="Free Shipping on Orders ₹{threshold}+">
+                                                                                                </label><label class=""><span>Icon</span>
+                    <input name="header_benefits[5][icon]" value="ph-truck">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="header_benefits[5][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" data-collection-template hidden disabled>
+                <legend>Header_benefits item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="header_benefits[6][title]" value="">
+                                                                                                </label><label class=""><span>Icon</span>
+                    <input name="header_benefits[6][icon]" value="">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="header_benefits[6][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                    </div>
+    </section>
+        <section class="admin-card"><div class="admin-card__header"><div><h2>Trust</h2><p>Edit a card below or add another. Use Up and Down to change its order.</p></div><button type="button" class="admin-button admin-button--secondary" data-collection-add="trust">Add row <i class="ph ph-plus"></i></button></div>
+        <div class="admin-card__body" data-collection-rows="trust">
+                        <fieldset class="collection-editor" >
+                <legend>Trust item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <textarea name="trust[0][title]">Sourced from
+Trusted Indian Farms</textarea>
+                                                                                                </label><label class=""><span>Subtitle</span>
+                    <input name="trust[0][subtitle]" value="Pure by Origin">
+                                                                                                </label><label class=""><span>Icon</span>
+                    <input name="trust[0][icon]" value="ph-house-line">
+                                                                                                </label><label class=""><span>Image</span>
+                    <input name="trust[0][image]" value="assets/images/gawdee-trust-promises-reference-v1.png">
+                                        <input type="file" name="trust_0_image" accept="image/png,image/jpeg,image/webp" data-collection-upload="image">                                                        </label><label class=""><span>Image Crop</span>
+                    <input name="trust[0][image_crop]" value="54,48,137,100,2051,287">
+                                                            <small>Reference artwork region: x,y,width,height,source width,source height. Leave blank for your own complete card. Uploading an image clears the crop automatically.</small>                                    </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="trust[0][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Trust item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <textarea name="trust[1][title]">Lab Tested
+for Purity</textarea>
+                                                                                                </label><label class=""><span>Subtitle</span>
+                    <input name="trust[1][subtitle]" value="Quality You Can Trust">
+                                                                                                </label><label class=""><span>Icon</span>
+                    <input name="trust[1][icon]" value="ph-flask">
+                                                                                                </label><label class=""><span>Image</span>
+                    <input name="trust[1][image]" value="assets/images/gawdee-trust-promises-reference-v1.png">
+                                        <input type="file" name="trust_1_image" accept="image/png,image/jpeg,image/webp" data-collection-upload="image">                                                        </label><label class=""><span>Image Crop</span>
+                    <input name="trust[1][image_crop]" value="321,47,91,100,2051,287">
+                                                            <small>Reference artwork region: x,y,width,height,source width,source height. Leave blank for your own complete card. Uploading an image clears the crop automatically.</small>                                    </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="trust[1][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Trust item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <textarea name="trust[2][title]">Better Nutrition
+for a Healthier You</textarea>
+                                                                                                </label><label class=""><span>Subtitle</span>
+                    <input name="trust[2][subtitle]" value="Goodness in Every Spoon">
+                                                                                                </label><label class=""><span>Icon</span>
+                    <input name="trust[2][icon]" value="ph-heartbeat">
+                                                                                                </label><label class=""><span>Image</span>
+                    <input name="trust[2][image]" value="assets/images/gawdee-trust-promises-reference-v1.png">
+                                        <input type="file" name="trust_2_image" accept="image/png,image/jpeg,image/webp" data-collection-upload="image">                                                        </label><label class=""><span>Image Crop</span>
+                    <input name="trust[2][image_crop]" value="577,47,112,100,2051,287">
+                                                            <small>Reference artwork region: x,y,width,height,source width,source height. Leave blank for your own complete card. Uploading an image clears the crop automatically.</small>                                    </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="trust[2][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Trust item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <textarea name="trust[3][title]">No Preservatives
+No Additives</textarea>
+                                                                                                </label><label class=""><span>Subtitle</span>
+                    <input name="trust[3][subtitle]" value="100% Natural">
+                                                                                                </label><label class=""><span>Icon</span>
+                    <input name="trust[3][icon]" value="ph-leaf">
+                                                                                                </label><label class=""><span>Image</span>
+                    <input name="trust[3][image]" value="assets/images/gawdee-trust-promises-reference-v1.png">
+                                        <input type="file" name="trust_3_image" accept="image/png,image/jpeg,image/webp" data-collection-upload="image">                                                        </label><label class=""><span>Image Crop</span>
+                    <input name="trust[3][image_crop]" value="849,47,121,100,2051,287">
+                                                            <small>Reference artwork region: x,y,width,height,source width,source height. Leave blank for your own complete card. Uploading an image clears the crop automatically.</small>                                    </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="trust[3][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Trust item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <textarea name="trust[4][title]">Ethically Sourced
+Happy Cows</textarea>
+                                                                                                </label><label class=""><span>Subtitle</span>
+                    <input name="trust[4][subtitle]" value="Care for Animals">
+                                                                                                </label><label class=""><span>Icon</span>
+                    <input name="trust[4][icon]" value="ph-cow">
+                                                                                                </label><label class=""><span>Image</span>
+                    <input name="trust[4][image]" value="assets/images/gawdee-trust-promises-reference-v1.png">
+                                        <input type="file" name="trust_4_image" accept="image/png,image/jpeg,image/webp" data-collection-upload="image">                                                        </label><label class=""><span>Image Crop</span>
+                    <input name="trust[4][image_crop]" value="1097,47,123,100,2051,287">
+                                                            <small>Reference artwork region: x,y,width,height,source width,source height. Leave blank for your own complete card. Uploading an image clears the crop automatically.</small>                                    </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="trust[4][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Trust item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <textarea name="trust[5][title]">Sustainable
+Packaging</textarea>
+                                                                                                </label><label class=""><span>Subtitle</span>
+                    <input name="trust[5][subtitle]" value="For a Greener Tomorrow">
+                                                                                                </label><label class=""><span>Icon</span>
+                    <input name="trust[5][icon]" value="ph-recycle">
+                                                                                                </label><label class=""><span>Image</span>
+                    <input name="trust[5][image]" value="assets/images/gawdee-trust-promises-reference-v1.png">
+                                        <input type="file" name="trust_5_image" accept="image/png,image/jpeg,image/webp" data-collection-upload="image">                                                        </label><label class=""><span>Image Crop</span>
+                    <input name="trust[5][image_crop]" value="1370,43,116,106,2051,287">
+                                                            <small>Reference artwork region: x,y,width,height,source width,source height. Leave blank for your own complete card. Uploading an image clears the crop automatically.</small>                                    </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="trust[5][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Trust item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <textarea name="trust[6][title]">Fast &amp; Safe
+Delivery</textarea>
+                                                                                                </label><label class=""><span>Subtitle</span>
+                    <input name="trust[6][subtitle]" value="Across India">
+                                                                                                </label><label class=""><span>Icon</span>
+                    <input name="trust[6][icon]" value="ph-truck">
+                                                                                                </label><label class=""><span>Image</span>
+                    <input name="trust[6][image]" value="assets/images/gawdee-trust-promises-reference-v1.png">
+                                        <input type="file" name="trust_6_image" accept="image/png,image/jpeg,image/webp" data-collection-upload="image">                                                        </label><label class=""><span>Image Crop</span>
+                    <input name="trust[6][image_crop]" value="1617,49,126,100,2051,287">
+                                                            <small>Reference artwork region: x,y,width,height,source width,source height. Leave blank for your own complete card. Uploading an image clears the crop automatically.</small>                                    </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="trust[6][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Trust item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <textarea name="trust[7][title]">Trusted by
+Thousands</textarea>
+                                                                                                </label><label class=""><span>Subtitle</span>
+                    <input name="trust[7][subtitle]" value="Natural. Authentic. Safe.">
+                                                                                                </label><label class=""><span>Icon</span>
+                    <input name="trust[7][icon]" value="ph-shield-check">
+                                                                                                </label><label class=""><span>Image</span>
+                    <input name="trust[7][image]" value="assets/images/gawdee-trust-promises-reference-v1.png">
+                                        <input type="file" name="trust_7_image" accept="image/png,image/jpeg,image/webp" data-collection-upload="image">                                                        </label><label class=""><span>Image Crop</span>
+                    <input name="trust[7][image_crop]" value="1868,44,112,105,2051,287">
+                                                            <small>Reference artwork region: x,y,width,height,source width,source height. Leave blank for your own complete card. Uploading an image clears the crop automatically.</small>                                    </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="trust[7][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" data-collection-template hidden disabled>
+                <legend>Trust item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="trust[8][title]" value="">
+                                                                                                </label><label class=""><span>Subtitle</span>
+                    <input name="trust[8][subtitle]" value="">
+                                                                                                </label><label class=""><span>Icon</span>
+                    <input name="trust[8][icon]" value="">
+                                                                                                </label><label class=""><span>Image</span>
+                    <input name="trust[8][image]" value="">
+                                        <input type="file" name="trust_8_image" accept="image/png,image/jpeg,image/webp" data-collection-upload="image">                                                        </label><label class=""><span>Image Crop</span>
+                    <input name="trust[8][image_crop]" value="">
+                                                            <small>Reference artwork region: x,y,width,height,source width,source height. Leave blank for your own complete card. Uploading an image clears the crop automatically.</small>                                    </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="trust[8][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                    </div>
+    </section>
+        <section class="admin-card"><div class="admin-card__header"><div><h2>Why_choose</h2><p>Edit a card below or add another. Use Up and Down to change its order.</p></div><button type="button" class="admin-button admin-button--secondary" data-collection-add="why_choose">Add row <i class="ph ph-plus"></i></button></div>
+        <div class="admin-card__body" data-collection-rows="why_choose">
+                        <fieldset class="collection-editor" >
+                <legend>Why_choose item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <textarea name="why_choose[0][title]">Sourced from
+Trusted Indian Farms</textarea>
+                                                                                                </label><label class=""><span>Subtitle</span>
+                    <input name="why_choose[0][subtitle]" value="Authentic &amp; Ethical">
+                                                                                                </label><label class=""><span>Icon</span>
+                    <input name="why_choose[0][icon]" value="ph-house-line">
+                                                                                                </label><label class=""><span>Image</span>
+                    <input name="why_choose[0][image]" value="assets/images/gawdee-trust-promises-reference-v1.png">
+                                        <input type="file" name="why_choose_0_image" accept="image/png,image/jpeg,image/webp" data-collection-upload="image">                                                        </label><label class=""><span>Image Crop</span>
+                    <input name="why_choose[0][image_crop]" value="54,48,137,100,2051,287">
+                                                            <small>Reference artwork region: x,y,width,height,source width,source height. Leave blank for your own complete card. Uploading an image clears the crop automatically.</small>                                    </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="why_choose[0][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Why_choose item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="why_choose[1][title]" value="100% Natural">
+                                                                                                </label><label class=""><span>Subtitle</span>
+                    <input name="why_choose[1][subtitle]" value="No Preservatives">
+                                                                                                </label><label class=""><span>Icon</span>
+                    <input name="why_choose[1][icon]" value="ph-leaf">
+                                                                                                </label><label class=""><span>Image</span>
+                    <input name="why_choose[1][image]" value="assets/images/gawdee-trust-promises-reference-v1.png">
+                                        <input type="file" name="why_choose_1_image" accept="image/png,image/jpeg,image/webp" data-collection-upload="image">                                                        </label><label class=""><span>Image Crop</span>
+                    <input name="why_choose[1][image_crop]" value="849,47,121,100,2051,287">
+                                                            <small>Reference artwork region: x,y,width,height,source width,source height. Leave blank for your own complete card. Uploading an image clears the crop automatically.</small>                                    </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="why_choose[1][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Why_choose item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="why_choose[2][title]" value="Lab Tested">
+                                                                                                </label><label class=""><span>Subtitle</span>
+                    <input name="why_choose[2][subtitle]" value="for Purity">
+                                                                                                </label><label class=""><span>Icon</span>
+                    <input name="why_choose[2][icon]" value="ph-flask">
+                                                                                                </label><label class=""><span>Image</span>
+                    <input name="why_choose[2][image]" value="assets/images/gawdee-trust-promises-reference-v1.png">
+                                        <input type="file" name="why_choose_2_image" accept="image/png,image/jpeg,image/webp" data-collection-upload="image">                                                        </label><label class=""><span>Image Crop</span>
+                    <input name="why_choose[2][image_crop]" value="321,47,91,100,2051,287">
+                                                            <small>Reference artwork region: x,y,width,height,source width,source height. Leave blank for your own complete card. Uploading an image clears the crop automatically.</small>                                    </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="why_choose[2][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Why_choose item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="why_choose[3][title]" value="Better Nutrition">
+                                                                                                </label><label class=""><span>Subtitle</span>
+                    <input name="why_choose[3][subtitle]" value="for a Healthier You">
+                                                                                                </label><label class=""><span>Icon</span>
+                    <input name="why_choose[3][icon]" value="ph-heartbeat">
+                                                                                                </label><label class=""><span>Image</span>
+                    <input name="why_choose[3][image]" value="assets/images/gawdee-trust-promises-reference-v1.png">
+                                        <input type="file" name="why_choose_3_image" accept="image/png,image/jpeg,image/webp" data-collection-upload="image">                                                        </label><label class=""><span>Image Crop</span>
+                    <input name="why_choose[3][image_crop]" value="577,47,112,100,2051,287">
+                                                            <small>Reference artwork region: x,y,width,height,source width,source height. Leave blank for your own complete card. Uploading an image clears the crop automatically.</small>                                    </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="why_choose[3][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Why_choose item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <textarea name="why_choose[4][title]">Supports
+Organic Farming</textarea>
+                                                                                                </label><label class=""><span>Subtitle</span>
+                    <input name="why_choose[4][subtitle]" value="Empowering Farmers">
+                                                                                                </label><label class=""><span>Icon</span>
+                    <input name="why_choose[4][icon]" value="ph-leaf">
+                                                                                                </label><label class=""><span>Image</span>
+                    <input name="why_choose[4][image]" value="assets/images/gawdee-trust-promises-reference-v1.png">
+                                        <input type="file" name="why_choose_4_image" accept="image/png,image/jpeg,image/webp" data-collection-upload="image">                                                        </label><label class=""><span>Image Crop</span>
+                    <input name="why_choose[4][image_crop]" value="849,47,121,100,2051,287">
+                                                            <small>Reference artwork region: x,y,width,height,source width,source height. Leave blank for your own complete card. Uploading an image clears the crop automatically.</small>                                    </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="why_choose[4][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Why_choose item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <textarea name="why_choose[5][title]">Safe for
+Your Family</textarea>
+                                                                                                </label><label class=""><span>Subtitle</span>
+                    <input name="why_choose[5][subtitle]" value="Quality You Can Trust">
+                                                                                                </label><label class=""><span>Icon</span>
+                    <input name="why_choose[5][icon]" value="ph-shield-check">
+                                                                                                </label><label class=""><span>Image</span>
+                    <input name="why_choose[5][image]" value="assets/images/gawdee-trust-promises-reference-v1.png">
+                                        <input type="file" name="why_choose_5_image" accept="image/png,image/jpeg,image/webp" data-collection-upload="image">                                                        </label><label class=""><span>Image Crop</span>
+                    <input name="why_choose[5][image_crop]" value="1868,44,112,105,2051,287">
+                                                            <small>Reference artwork region: x,y,width,height,source width,source height. Leave blank for your own complete card. Uploading an image clears the crop automatically.</small>                                    </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="why_choose[5][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Why_choose item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="why_choose[6][title]" value="Eco-Friendly">
+                                                                                                </label><label class=""><span>Subtitle</span>
+                    <input name="why_choose[6][subtitle]" value="A Greener Tomorrow">
+                                                                                                </label><label class=""><span>Icon</span>
+                    <input name="why_choose[6][icon]" value="ph-recycle">
+                                                                                                </label><label class=""><span>Image</span>
+                    <input name="why_choose[6][image]" value="assets/images/gawdee-trust-promises-reference-v1.png">
+                                        <input type="file" name="why_choose_6_image" accept="image/png,image/jpeg,image/webp" data-collection-upload="image">                                                        </label><label class=""><span>Image Crop</span>
+                    <input name="why_choose[6][image_crop]" value="1370,43,116,106,2051,287">
+                                                            <small>Reference artwork region: x,y,width,height,source width,source height. Leave blank for your own complete card. Uploading an image clears the crop automatically.</small>                                    </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="why_choose[6][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Why_choose item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <textarea name="why_choose[7][title]">Fast &amp; Reliable
+Delivery</textarea>
+                                                                                                </label><label class=""><span>Subtitle</span>
+                    <input name="why_choose[7][subtitle]" value="Goodness at Your Doorstep">
+                                                                                                </label><label class=""><span>Icon</span>
+                    <input name="why_choose[7][icon]" value="ph-truck">
+                                                                                                </label><label class=""><span>Image</span>
+                    <input name="why_choose[7][image]" value="assets/images/gawdee-trust-promises-reference-v1.png">
+                                        <input type="file" name="why_choose_7_image" accept="image/png,image/jpeg,image/webp" data-collection-upload="image">                                                        </label><label class=""><span>Image Crop</span>
+                    <input name="why_choose[7][image_crop]" value="1617,49,126,100,2051,287">
+                                                            <small>Reference artwork region: x,y,width,height,source width,source height. Leave blank for your own complete card. Uploading an image clears the crop automatically.</small>                                    </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="why_choose[7][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" data-collection-template hidden disabled>
+                <legend>Why_choose item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="why_choose[8][title]" value="">
+                                                                                                </label><label class=""><span>Subtitle</span>
+                    <input name="why_choose[8][subtitle]" value="">
+                                                                                                </label><label class=""><span>Icon</span>
+                    <input name="why_choose[8][icon]" value="">
+                                                                                                </label><label class=""><span>Image</span>
+                    <input name="why_choose[8][image]" value="">
+                                        <input type="file" name="why_choose_8_image" accept="image/png,image/jpeg,image/webp" data-collection-upload="image">                                                        </label><label class=""><span>Image Crop</span>
+                    <input name="why_choose[8][image_crop]" value="">
+                                                            <small>Reference artwork region: x,y,width,height,source width,source height. Leave blank for your own complete card. Uploading an image clears the crop automatically.</small>                                    </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="why_choose[8][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                    </div>
+    </section>
+        <section class="admin-card"><div class="admin-card__header"><div><h2>Bestseller_benefits</h2><p>Edit a card below or add another. Use Up and Down to change its order.</p></div><button type="button" class="admin-button admin-button--secondary" data-collection-add="bestseller_benefits">Add row <i class="ph ph-plus"></i></button></div>
+        <div class="admin-card__body" data-collection-rows="bestseller_benefits">
+                        <fieldset class="collection-editor" >
+                <legend>Bestseller_benefits item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="bestseller_benefits[0][title]" value="100% Natural">
+                                                                                                </label><label class=""><span>Icon</span>
+                    <input name="bestseller_benefits[0][icon]" value="ph-leaf">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="bestseller_benefits[0][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Bestseller_benefits item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="bestseller_benefits[1][title]" value="No Preservatives">
+                                                                                                </label><label class=""><span>Icon</span>
+                    <input name="bestseller_benefits[1][icon]" value="ph-flask">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="bestseller_benefits[1][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Bestseller_benefits item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="bestseller_benefits[2][title]" value="Trusted by Families">
+                                                                                                </label><label class=""><span>Icon</span>
+                    <input name="bestseller_benefits[2][icon]" value="ph-heart">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="bestseller_benefits[2][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Bestseller_benefits item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="bestseller_benefits[3][title]" value="Fast Delivery">
+                                                                                                </label><label class=""><span>Icon</span>
+                    <input name="bestseller_benefits[3][icon]" value="ph-truck">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="bestseller_benefits[3][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Bestseller_benefits item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="bestseller_benefits[4][title]" value="Quality Assured">
+                                                                                                </label><label class=""><span>Icon</span>
+                    <input name="bestseller_benefits[4][icon]" value="ph-shield-check">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="bestseller_benefits[4][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" data-collection-template hidden disabled>
+                <legend>Bestseller_benefits item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="bestseller_benefits[5][title]" value="">
+                                                                                                </label><label class=""><span>Icon</span>
+                    <input name="bestseller_benefits[5][icon]" value="">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="bestseller_benefits[5][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                    </div>
+    </section>
+        <section class="admin-card"><div class="admin-card__header"><div><h2>Combo_benefits</h2><p>Edit a card below or add another. Use Up and Down to change its order.</p></div><button type="button" class="admin-button admin-button--secondary" data-collection-add="combo_benefits">Add row <i class="ph ph-plus"></i></button></div>
+        <div class="admin-card__body" data-collection-rows="combo_benefits">
+                        <fieldset class="collection-editor" >
+                <legend>Combo_benefits item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="combo_benefits[0][title]" value="100% Natural">
+                                                                                                </label><label class=""><span>Icon</span>
+                    <input name="combo_benefits[0][icon]" value="ph-plant">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="combo_benefits[0][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Combo_benefits item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="combo_benefits[1][title]" value="Trusted Quality">
+                                                                                                </label><label class=""><span>Icon</span>
+                    <input name="combo_benefits[1][icon]" value="ph-shield-check">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="combo_benefits[1][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Combo_benefits item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="combo_benefits[2][title]" value="Fast Delivery">
+                                                                                                </label><label class=""><span>Icon</span>
+                    <input name="combo_benefits[2][icon]" value="ph-truck">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="combo_benefits[2][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Combo_benefits item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="combo_benefits[3][title]" value="Better Value">
+                                                                                                </label><label class=""><span>Icon</span>
+                    <input name="combo_benefits[3][icon]" value="ph-heart">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="combo_benefits[3][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" data-collection-template hidden disabled>
+                <legend>Combo_benefits item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="combo_benefits[4][title]" value="">
+                                                                                                </label><label class=""><span>Icon</span>
+                    <input name="combo_benefits[4][icon]" value="">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="combo_benefits[4][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                    </div>
+    </section>
+        <section class="admin-card"><div class="admin-card__header"><div><h2>Quality_benefits</h2><p>Edit a card below or add another. Use Up and Down to change its order.</p></div><button type="button" class="admin-button admin-button--secondary" data-collection-add="quality_benefits">Add row <i class="ph ph-plus"></i></button></div>
+        <div class="admin-card__body" data-collection-rows="quality_benefits">
+                        <fieldset class="collection-editor" >
+                <legend>Quality_benefits item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="quality_benefits[0][title]" value="Pure Products">
+                                                                                                </label><label class=""><span>Icon</span>
+                    <input name="quality_benefits[0][icon]" value="ph-plant">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="quality_benefits[0][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Quality_benefits item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="quality_benefits[1][title]" value="Better Nutrition">
+                                                                                                </label><label class=""><span>Icon</span>
+                    <input name="quality_benefits[1][icon]" value="ph-heart">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="quality_benefits[1][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Quality_benefits item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="quality_benefits[2][title]" value="Happier Families">
+                                                                                                </label><label class=""><span>Icon</span>
+                    <input name="quality_benefits[2][icon]" value="ph-users-three">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="quality_benefits[2][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" data-collection-template hidden disabled>
+                <legend>Quality_benefits item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="quality_benefits[3][title]" value="">
+                                                                                                </label><label class=""><span>Icon</span>
+                    <input name="quality_benefits[3][icon]" value="">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="quality_benefits[3][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                    </div>
+    </section>
+        <section class="admin-card"><div class="admin-card__header"><div><h2>Product_promises</h2><p>Edit a card below or add another. Use Up and Down to change its order.</p></div><button type="button" class="admin-button admin-button--secondary" data-collection-add="product_promises">Add row <i class="ph ph-plus"></i></button></div>
+        <div class="admin-card__body" data-collection-rows="product_promises">
+                        <fieldset class="collection-editor" >
+                <legend>Product_promises item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="product_promises[0][title]" value="Lab Tested">
+                                                                                                </label><label class=""><span>Subtitle</span>
+                    <input name="product_promises[0][subtitle]" value="For purity">
+                                                                                                </label><label class=""><span>Icon</span>
+                    <input name="product_promises[0][icon]" value="ph-flask">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="product_promises[0][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Product_promises item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="product_promises[1][title]" value="Carefully Sourced">
+                                                                                                </label><label class=""><span>Subtitle</span>
+                    <input name="product_promises[1][subtitle]" value="Selected ingredients">
+                                                                                                </label><label class=""><span>Icon</span>
+                    <input name="product_promises[1][icon]" value="ph-plant">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="product_promises[1][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Product_promises item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="product_promises[2][title]" value="Quality First">
+                                                                                                </label><label class=""><span>Subtitle</span>
+                    <input name="product_promises[2][subtitle]" value="Care in every pack">
+                                                                                                </label><label class=""><span>Icon</span>
+                    <input name="product_promises[2][icon]" value="ph-shield-check">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="product_promises[2][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Product_promises item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="product_promises[3][title]" value="To Your Door">
+                                                                                                </label><label class=""><span>Subtitle</span>
+                    <input name="product_promises[3][subtitle]" value="Delivery across India">
+                                                                                                </label><label class=""><span>Icon</span>
+                    <input name="product_promises[3][icon]" value="ph-truck">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="product_promises[3][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" data-collection-template hidden disabled>
+                <legend>Product_promises item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="product_promises[4][title]" value="">
+                                                                                                </label><label class=""><span>Subtitle</span>
+                    <input name="product_promises[4][subtitle]" value="">
+                                                                                                </label><label class=""><span>Icon</span>
+                    <input name="product_promises[4][icon]" value="">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="product_promises[4][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                    </div>
+    </section>
+        <section class="admin-card"><div class="admin-card__header"><div><h2>Categories</h2><p>Edit a card below or add another. Use Up and Down to change its order.</p></div><button type="button" class="admin-button admin-button--secondary" data-collection-add="categories">Add row <i class="ph ph-plus"></i></button></div>
+        <div class="admin-card__body" data-collection-rows="categories">
+                        <fieldset class="collection-editor" >
+                <legend>Categories item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="categories[0][title]" value="A2 Gir Cow Ghee">
+                                                                                                </label><label class=""><span>Subtitle</span>
+                    <input name="categories[0][subtitle]" value="Pure. Traditional. Nourishing.">
+                                                                                                </label><label class=""><span>Url</span>
+                    <input name="categories[0][url]" value="products.php?category=ghee">
+                                                                                                </label><label class=""><span>Image</span>
+                    <input name="categories[0][image]" value="assets/images/shop-by-category-reference-v1.png">
+                                        <input type="file" name="categories_0_image" accept="image/png,image/jpeg,image/webp" data-collection-upload="image">                                                        </label><label class=""><span>Image Crop</span>
+                    <input name="categories[0][image_crop]" value="56,140,390,198,2048,353">
+                                                            <small>Reference artwork region: x,y,width,height,source width,source height. Leave blank for your own complete card. Uploading an image clears the crop automatically.</small>                                    </label><label class=""><span>Icon</span>
+                    <input name="categories[0][icon]" value="ph-cow">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="categories[0][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Categories item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="categories[1][title]" value="Natural Honey">
+                                                                                                </label><label class=""><span>Subtitle</span>
+                    <input name="categories[1][subtitle]" value="Raw &amp; Naturally Rich">
+                                                                                                </label><label class=""><span>Url</span>
+                    <input name="categories[1][url]" value="products.php?category=honey">
+                                                                                                </label><label class=""><span>Image</span>
+                    <input name="categories[1][image]" value="assets/images/shop-by-category-reference-v1.png">
+                                        <input type="file" name="categories_1_image" accept="image/png,image/jpeg,image/webp" data-collection-upload="image">                                                        </label><label class=""><span>Image Crop</span>
+                    <input name="categories[1][image_crop]" value="466,140,362,198,2048,353">
+                                                            <small>Reference artwork region: x,y,width,height,source width,source height. Leave blank for your own complete card. Uploading an image clears the crop automatically.</small>                                    </label><label class=""><span>Icon</span>
+                    <input name="categories[1][icon]" value="ph-drop">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="categories[1][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Categories item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="categories[2][title]" value="Natural Sugars">
+                                                                                                </label><label class=""><span>Subtitle</span>
+                    <input name="categories[2][subtitle]" value="Traditional Sweetness">
+                                                                                                </label><label class=""><span>Url</span>
+                    <input name="categories[2][url]" value="products.php?category=sugar">
+                                                                                                </label><label class=""><span>Image</span>
+                    <input name="categories[2][image]" value="assets/images/shop-by-category-reference-v1.png">
+                                        <input type="file" name="categories_2_image" accept="image/png,image/jpeg,image/webp" data-collection-upload="image">                                                        </label><label class=""><span>Image Crop</span>
+                    <input name="categories[2][image_crop]" value="846,140,367,198,2048,353">
+                                                            <small>Reference artwork region: x,y,width,height,source width,source height. Leave blank for your own complete card. Uploading an image clears the crop automatically.</small>                                    </label><label class=""><span>Icon</span>
+                    <input name="categories[2][icon]" value="ph-grains">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="categories[2][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Categories item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="categories[3][title]" value="Grains &amp; Millets">
+                                                                                                </label><label class=""><span>Subtitle</span>
+                    <input name="categories[3][subtitle]" value="Everyday Nourishment">
+                                                                                                </label><label class=""><span>Url</span>
+                    <input name="categories[3][url]" value="products.php?category=grains">
+                                                                                                </label><label class=""><span>Image</span>
+                    <input name="categories[3][image]" value="assets/images/shop-by-category-reference-v1.png">
+                                        <input type="file" name="categories_3_image" accept="image/png,image/jpeg,image/webp" data-collection-upload="image">                                                        </label><label class=""><span>Image Crop</span>
+                    <input name="categories[3][image_crop]" value="1232,140,368,198,2048,353">
+                                                            <small>Reference artwork region: x,y,width,height,source width,source height. Leave blank for your own complete card. Uploading an image clears the crop automatically.</small>                                    </label><label class=""><span>Icon</span>
+                    <input name="categories[3][icon]" value="ph-grains">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="categories[3][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Categories item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="categories[4][title]" value="Wellness Products">
+                                                                                                </label><label class=""><span>Subtitle</span>
+                    <input name="categories[4][subtitle]" value="Clean Daily Support">
+                                                                                                </label><label class=""><span>Url</span>
+                    <input name="categories[4][url]" value="products.php?category=wellness">
+                                                                                                </label><label class=""><span>Image</span>
+                    <input name="categories[4][image]" value="assets/images/shop-by-category-reference-v1.png">
+                                        <input type="file" name="categories_4_image" accept="image/png,image/jpeg,image/webp" data-collection-upload="image">                                                        </label><label class=""><span>Image Crop</span>
+                    <input name="categories[4][image_crop]" value="1618,140,382,198,2048,353">
+                                                            <small>Reference artwork region: x,y,width,height,source width,source height. Leave blank for your own complete card. Uploading an image clears the crop automatically.</small>                                    </label><label class=""><span>Icon</span>
+                    <input name="categories[4][icon]" value="ph-leaf">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="categories[4][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" data-collection-template hidden disabled>
+                <legend>Categories item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="categories[5][title]" value="">
+                                                                                                </label><label class=""><span>Subtitle</span>
+                    <input name="categories[5][subtitle]" value="">
+                                                                                                </label><label class=""><span>Url</span>
+                    <input name="categories[5][url]" value="">
+                                                                                                </label><label class=""><span>Image</span>
+                    <input name="categories[5][image]" value="">
+                                        <input type="file" name="categories_5_image" accept="image/png,image/jpeg,image/webp" data-collection-upload="image">                                                        </label><label class=""><span>Image Crop</span>
+                    <input name="categories[5][image_crop]" value="">
+                                                            <small>Reference artwork region: x,y,width,height,source width,source height. Leave blank for your own complete card. Uploading an image clears the crop automatically.</small>                                    </label><label class=""><span>Icon</span>
+                    <input name="categories[5][icon]" value="">
+                                                                                                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="categories[5][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                    </div>
+    </section>
+        <section class="admin-card"><div class="admin-card__header"><div><h2>Bestsellers</h2><p>Edit a card below or add another. Use Up and Down to change its order.</p></div><button type="button" class="admin-button admin-button--secondary" data-collection-add="bestsellers">Add row <i class="ph ph-plus"></i></button></div>
+        <div class="admin-card__body" data-collection-rows="bestsellers">
+                        <fieldset class="collection-editor" >
+                <legend>Bestsellers item</legend>
+                <div class="form-grid">
+                <label class=""><span>Product Id</span>
+                    <select name="bestsellers[0][product_id]"><option value="">Choose product</option><option value="ghee-500" selected>Gawdee Gir Cow A2 Ghee 500ml</option><option value="burra-sugar" >Gawdee Burra Sugar 1kg</option><option value="mixme-choco" >Gawdee MixMe — Choco 500g</option><option value="mixme-elaichi" >Gawdee MixMe — Elaichi 500g</option><option value="moringa" >Gawdee Moringa Powder 300g</option><option value="forest-honey" >Gawdee Raw Wild Forest Honey 650g</option><option value="white-sugar" >Gawdee Sulphur-Free White Sugar 1kg</option><option value="taral-drop" >Gawdee Taral Drop 30ml</option></select>
+                                                                                                </label><label class=""><span>Badge</span>
+                    <input name="bestsellers[0][badge]" value="Bestseller">
+                                                                                                </label><label class=""><span>Features</span>
+                    <input name="bestsellers[0][features]" value="A2 Milk | Rich Nutrition | Traditional Bilona">
+                                                                                <small>Three short benefits separated by |. These appear below the product image.</small>                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="bestsellers[0][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Bestsellers item</legend>
+                <div class="form-grid">
+                <label class=""><span>Product Id</span>
+                    <select name="bestsellers[1][product_id]"><option value="">Choose product</option><option value="ghee-500" >Gawdee Gir Cow A2 Ghee 500ml</option><option value="burra-sugar" >Gawdee Burra Sugar 1kg</option><option value="mixme-choco" >Gawdee MixMe — Choco 500g</option><option value="mixme-elaichi" >Gawdee MixMe — Elaichi 500g</option><option value="moringa" >Gawdee Moringa Powder 300g</option><option value="forest-honey" selected>Gawdee Raw Wild Forest Honey 650g</option><option value="white-sugar" >Gawdee Sulphur-Free White Sugar 1kg</option><option value="taral-drop" >Gawdee Taral Drop 30ml</option></select>
+                                                                                                </label><label class=""><span>Badge</span>
+                    <input name="bestsellers[1][badge]" value="Popular">
+                                                                                                </label><label class=""><span>Features</span>
+                    <input name="bestsellers[1][features]" value="Raw Honey | Naturally Rich | Carefully Sourced">
+                                                                                <small>Three short benefits separated by |. These appear below the product image.</small>                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="bestsellers[1][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Bestsellers item</legend>
+                <div class="form-grid">
+                <label class=""><span>Product Id</span>
+                    <select name="bestsellers[2][product_id]"><option value="">Choose product</option><option value="ghee-500" >Gawdee Gir Cow A2 Ghee 500ml</option><option value="burra-sugar" selected>Gawdee Burra Sugar 1kg</option><option value="mixme-choco" >Gawdee MixMe — Choco 500g</option><option value="mixme-elaichi" >Gawdee MixMe — Elaichi 500g</option><option value="moringa" >Gawdee Moringa Powder 300g</option><option value="forest-honey" >Gawdee Raw Wild Forest Honey 650g</option><option value="white-sugar" >Gawdee Sulphur-Free White Sugar 1kg</option><option value="taral-drop" >Gawdee Taral Drop 30ml</option></select>
+                                                                                                </label><label class=""><span>Badge</span>
+                    <input name="bestsellers[2][badge]" value="Pantry Favourite">
+                                                                                                </label><label class=""><span>Features</span>
+                    <input name="bestsellers[2][features]" value="Traditional Process | Natural Sweetness | Everyday Use">
+                                                                                <small>Three short benefits separated by |. These appear below the product image.</small>                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="bestsellers[2][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Bestsellers item</legend>
+                <div class="form-grid">
+                <label class=""><span>Product Id</span>
+                    <select name="bestsellers[3][product_id]"><option value="">Choose product</option><option value="ghee-500" >Gawdee Gir Cow A2 Ghee 500ml</option><option value="burra-sugar" >Gawdee Burra Sugar 1kg</option><option value="mixme-choco" selected>Gawdee MixMe — Choco 500g</option><option value="mixme-elaichi" >Gawdee MixMe — Elaichi 500g</option><option value="moringa" >Gawdee Moringa Powder 300g</option><option value="forest-honey" >Gawdee Raw Wild Forest Honey 650g</option><option value="white-sugar" >Gawdee Sulphur-Free White Sugar 1kg</option><option value="taral-drop" >Gawdee Taral Drop 30ml</option></select>
+                                                                                                </label><label class=""><span>Badge</span>
+                    <input name="bestsellers[3][badge]" value="Family Favourite">
+                                                                                                </label><label class=""><span>Features</span>
+                    <input name="bestsellers[3][features]" value="Multigrain Blend | Cocoa Taste | Easy to Mix">
+                                                                                <small>Three short benefits separated by |. These appear below the product image.</small>                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="bestsellers[3][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Bestsellers item</legend>
+                <div class="form-grid">
+                <label class=""><span>Product Id</span>
+                    <select name="bestsellers[4][product_id]"><option value="">Choose product</option><option value="ghee-500" >Gawdee Gir Cow A2 Ghee 500ml</option><option value="burra-sugar" >Gawdee Burra Sugar 1kg</option><option value="mixme-choco" >Gawdee MixMe — Choco 500g</option><option value="mixme-elaichi" >Gawdee MixMe — Elaichi 500g</option><option value="moringa" selected>Gawdee Moringa Powder 300g</option><option value="forest-honey" >Gawdee Raw Wild Forest Honey 650g</option><option value="white-sugar" >Gawdee Sulphur-Free White Sugar 1kg</option><option value="taral-drop" >Gawdee Taral Drop 30ml</option></select>
+                                                                                                </label><label class=""><span>Badge</span>
+                    <input name="bestsellers[4][badge]" value="Wellness Choice">
+                                                                                                </label><label class=""><span>Features</span>
+                    <input name="bestsellers[4][features]" value="Leaf Powder | Plant Based | Daily Wellness">
+                                                                                <small>Three short benefits separated by |. These appear below the product image.</small>                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="bestsellers[4][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" data-collection-template hidden disabled>
+                <legend>Bestsellers item</legend>
+                <div class="form-grid">
+                <label class=""><span>Product Id</span>
+                    <select name="bestsellers[5][product_id]"><option value="">Choose product</option><option value="ghee-500" >Gawdee Gir Cow A2 Ghee 500ml</option><option value="burra-sugar" >Gawdee Burra Sugar 1kg</option><option value="mixme-choco" >Gawdee MixMe — Choco 500g</option><option value="mixme-elaichi" >Gawdee MixMe — Elaichi 500g</option><option value="moringa" >Gawdee Moringa Powder 300g</option><option value="forest-honey" >Gawdee Raw Wild Forest Honey 650g</option><option value="white-sugar" >Gawdee Sulphur-Free White Sugar 1kg</option><option value="taral-drop" >Gawdee Taral Drop 30ml</option></select>
+                                                                                                </label><label class=""><span>Badge</span>
+                    <input name="bestsellers[5][badge]" value="">
+                                                                                                </label><label class=""><span>Features</span>
+                    <input name="bestsellers[5][features]" value="">
+                                                                                <small>Three short benefits separated by |. These appear below the product image.</small>                </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="bestsellers[5][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                    </div>
+    </section>
+        <section class="admin-card"><div class="admin-card__header"><div><h2>Combos</h2><p>Each image should show every product in the combo. Prices and stock come from the selected products.</p></div><button type="button" class="admin-button admin-button--secondary" data-collection-add="combos">Add row <i class="ph ph-plus"></i></button></div>
+        <div class="admin-card__body" data-collection-rows="combos">
+                        <fieldset class="collection-editor" >
+                <legend>Combos item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="combos[0][title]" value="Ghee + Honey Combo">
+                                                                                                </label><label class=""><span>Subtitle</span>
+                    <input name="combos[0][subtitle]" value="Pure Goodness">
+                                                                                                </label><label class="form-span-2"><span>Product Ids</span>
+                    <input name="combos[0][product_ids]" value="ghee-500,forest-honey">
+                                                                                                </label><label class=""><span>Image</span>
+                    <input name="combos[0][image]" value="assets/images/combos/ghee-honey-combo-v1.png">
+                                        <input type="file" name="combos_0_image" accept="image/png,image/jpeg,image/webp" data-collection-upload="image">                                                        </label><label class=""><span>Hover Image</span>
+                    <input name="combos[0][hover_image]" value="">
+                                        <input type="file" name="combos_0_hover_image" accept="image/png,image/jpeg,image/webp" data-collection-upload="hover_image">                                                        </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="combos[0][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Combos item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="combos[1][title]" value="Breakfast Combo">
+                                                                                                </label><label class=""><span>Subtitle</span>
+                    <input name="combos[1][subtitle]" value="Breakfast Essentials">
+                                                                                                </label><label class="form-span-2"><span>Product Ids</span>
+                    <input name="combos[1][product_ids]" value="burra-sugar,mixme-choco">
+                                                                                                </label><label class=""><span>Image</span>
+                    <input name="combos[1][image]" value="assets/images/combos/breakfast-combo-v1.png">
+                                        <input type="file" name="combos_1_image" accept="image/png,image/jpeg,image/webp" data-collection-upload="image">                                                        </label><label class=""><span>Hover Image</span>
+                    <input name="combos[1][hover_image]" value="">
+                                        <input type="file" name="combos_1_hover_image" accept="image/png,image/jpeg,image/webp" data-collection-upload="hover_image">                                                        </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="combos[1][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Combos item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="combos[2][title]" value="Immunity Combo">
+                                                                                                </label><label class=""><span>Subtitle</span>
+                    <input name="combos[2][subtitle]" value="Daily Wellness">
+                                                                                                </label><label class="form-span-2"><span>Product Ids</span>
+                    <input name="combos[2][product_ids]" value="moringa,mixme-elaichi">
+                                                                                                </label><label class=""><span>Image</span>
+                    <input name="combos[2][image]" value="assets/images/combos/immunity-combo-v1.png">
+                                        <input type="file" name="combos_2_image" accept="image/png,image/jpeg,image/webp" data-collection-upload="image">                                                        </label><label class=""><span>Hover Image</span>
+                    <input name="combos[2][hover_image]" value="">
+                                        <input type="file" name="combos_2_hover_image" accept="image/png,image/jpeg,image/webp" data-collection-upload="hover_image">                                                        </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="combos[2][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Combos item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="combos[3][title]" value="Traditional Combo">
+                                                                                                </label><label class=""><span>Subtitle</span>
+                    <input name="combos[3][subtitle]" value="Traditional Goodness">
+                                                                                                </label><label class="form-span-2"><span>Product Ids</span>
+                    <input name="combos[3][product_ids]" value="ghee-500,burra-sugar">
+                                                                                                </label><label class=""><span>Image</span>
+                    <input name="combos[3][image]" value="assets/images/combos/traditional-combo-v1.png">
+                                        <input type="file" name="combos_3_image" accept="image/png,image/jpeg,image/webp" data-collection-upload="image">                                                        </label><label class=""><span>Hover Image</span>
+                    <input name="combos[3][hover_image]" value="">
+                                        <input type="file" name="combos_3_hover_image" accept="image/png,image/jpeg,image/webp" data-collection-upload="hover_image">                                                        </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="combos[3][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Combos item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="combos[4][title]" value="MixMe Combo">
+                                                                                                </label><label class=""><span>Subtitle</span>
+                    <input name="combos[4][subtitle]" value="Tasty Nutrition">
+                                                                                                </label><label class="form-span-2"><span>Product Ids</span>
+                    <input name="combos[4][product_ids]" value="mixme-choco,mixme-elaichi">
+                                                                                                </label><label class=""><span>Image</span>
+                    <input name="combos[4][image]" value="assets/images/combos/mixme-combo-v1.png">
+                                        <input type="file" name="combos_4_image" accept="image/png,image/jpeg,image/webp" data-collection-upload="image">                                                        </label><label class=""><span>Hover Image</span>
+                    <input name="combos[4][hover_image]" value="">
+                                        <input type="file" name="combos_4_hover_image" accept="image/png,image/jpeg,image/webp" data-collection-upload="hover_image">                                                        </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="combos[4][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Combos item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="combos[5][title]" value="Health Combo">
+                                                                                                </label><label class=""><span>Subtitle</span>
+                    <input name="combos[5][subtitle]" value="Complete Pantry">
+                                                                                                </label><label class="form-span-2"><span>Product Ids</span>
+                    <input name="combos[5][product_ids]" value="moringa,mixme-choco,ghee-500">
+                                                                                                </label><label class=""><span>Image</span>
+                    <input name="combos[5][image]" value="assets/images/combos/health-combo-v1.png">
+                                        <input type="file" name="combos_5_image" accept="image/png,image/jpeg,image/webp" data-collection-upload="image">                                                        </label><label class=""><span>Hover Image</span>
+                    <input name="combos[5][hover_image]" value="">
+                                        <input type="file" name="combos_5_hover_image" accept="image/png,image/jpeg,image/webp" data-collection-upload="hover_image">                                                        </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="combos[5][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" data-collection-template hidden disabled>
+                <legend>Combos item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="combos[6][title]" value="">
+                                                                                                </label><label class=""><span>Subtitle</span>
+                    <input name="combos[6][subtitle]" value="">
+                                                                                                </label><label class="form-span-2"><span>Product Ids</span>
+                    <input name="combos[6][product_ids]" value="">
+                                                                                                </label><label class=""><span>Image</span>
+                    <input name="combos[6][image]" value="">
+                                        <input type="file" name="combos_6_image" accept="image/png,image/jpeg,image/webp" data-collection-upload="image">                                                        </label><label class=""><span>Hover Image</span>
+                    <input name="combos[6][hover_image]" value="">
+                                        <input type="file" name="combos_6_hover_image" accept="image/png,image/jpeg,image/webp" data-collection-upload="hover_image">                                                        </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="combos[6][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                    </div>
+    </section>
+        <section class="admin-card"><div class="admin-card__header"><div><h2>Quality</h2><p>Edit a card below or add another. Use Up and Down to change its order.</p></div><button type="button" class="admin-button admin-button--secondary" data-collection-add="quality">Add row <i class="ph ph-plus"></i></button></div>
+        <div class="admin-card__body" data-collection-rows="quality">
+                        <fieldset class="collection-editor" >
+                <legend>Quality item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="quality[0][title]" value="Expert Team">
+                                                                                                </label><label class=""><span>Subtitle</span>
+                    <input name="quality[0][subtitle]" value="Experienced Nutrition &amp; Food Experts">
+                                                                                                </label><label class="form-span-2"><span>Text</span>
+                    <textarea name="quality[0][text]">Our in-house experts ensure every product meets the highest safety and quality standards.</textarea>
+                                                                                                </label><label class=""><span>Icon</span>
+                    <input name="quality[0][icon]" value="ph-plant">
+                                                                                                </label><label class=""><span>Image</span>
+                    <input name="quality[0][image]" value="assets/images/quality-promise-expert-team-v1.png">
+                                        <input type="file" name="quality_0_image" accept="image/png,image/jpeg,image/webp" data-collection-upload="image">                                                        </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="quality[0][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Quality item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="quality[1][title]" value="40+ Quality Checks">
+                                                                                                </label><label class=""><span>Subtitle</span>
+                    <input name="quality[1][subtitle]" value="Advanced In-House Lab Testing">
+                                                                                                </label><label class="form-span-2"><span>Text</span>
+                    <textarea name="quality[1][text]">Every batch is tested for purity, texture, moisture, nutrition and more. Nothing gets missed.</textarea>
+                                                                                                </label><label class=""><span>Icon</span>
+                    <input name="quality[1][icon]" value="ph-microscope">
+                                                                                                </label><label class=""><span>Image</span>
+                    <input name="quality[1][image]" value="assets/images/quality-promise-lab-testing-v1.png">
+                                        <input type="file" name="quality_1_image" accept="image/png,image/jpeg,image/webp" data-collection-upload="image">                                                        </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="quality[1][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Quality item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="quality[2][title]" value="Pure &amp; Safe Ingredients">
+                                                                                                </label><label class=""><span>Subtitle</span>
+                    <input name="quality[2][subtitle]" value="Naturally Sourced Premium Ingredients">
+                                                                                                </label><label class="form-span-2"><span>Text</span>
+                    <textarea name="quality[2][text]">We carefully source the best natural ingredients, ensuring clean, healthy and nutritious products.</textarea>
+                                                                                                </label><label class=""><span>Icon</span>
+                    <input name="quality[2][icon]" value="ph-shield-check">
+                                                                                                </label><label class=""><span>Image</span>
+                    <input name="quality[2][image]" value="assets/images/quality-promise-moringa-v1.png">
+                                        <input type="file" name="quality_2_image" accept="image/png,image/jpeg,image/webp" data-collection-upload="image">                                                        </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="quality[2][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" >
+                <legend>Quality item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="quality[3][title]" value="Complete Transparency">
+                                                                                                </label><label class=""><span>Subtitle</span>
+                    <input name="quality[3][subtitle]" value="Clear Information For Your Family">
+                                                                                                </label><label class="form-span-2"><span>Text</span>
+                    <textarea name="quality[3][text]">Know your ingredients, their source and how to use them. Because real trust is built on clarity.</textarea>
+                                                                                                </label><label class=""><span>Icon</span>
+                    <input name="quality[3][icon]" value="ph-file-text">
+                                                                                                </label><label class=""><span>Image</span>
+                    <input name="quality[3][image]" value="">
+                                        <input type="file" name="quality_3_image" accept="image/png,image/jpeg,image/webp" data-collection-upload="image">                                                        </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="quality[3][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                        <fieldset class="collection-editor" data-collection-template hidden disabled>
+                <legend>Quality item</legend>
+                <div class="form-grid">
+                <label class=""><span>Title</span>
+                    <input name="quality[4][title]" value="">
+                                                                                                </label><label class=""><span>Subtitle</span>
+                    <input name="quality[4][subtitle]" value="">
+                                                                                                </label><label class="form-span-2"><span>Text</span>
+                    <textarea name="quality[4][text]"></textarea>
+                                                                                                </label><label class=""><span>Icon</span>
+                    <input name="quality[4][icon]" value="">
+                                                                                                </label><label class=""><span>Image</span>
+                    <input name="quality[4][image]" value="">
+                                        <input type="file" name="quality_4_image" accept="image/png,image/jpeg,image/webp" data-collection-upload="image">                                                        </label>                </div>
+                <div class="admin-actions"><button type="button" class="admin-button admin-button--ghost" data-collection-up aria-label="Move item up">↑ Up</button><button type="button" class="admin-button admin-button--ghost" data-collection-down aria-label="Move item down">↓ Down</button><label class="form-switch"><input type="checkbox" name="quality[4][remove]" value="1"><span>Remove this item</span></label></div>
+            </fieldset>
+                    </div>
+    </section>
+        <div class="sticky-save-bar"><span>Hidden products are excluded automatically.</span><button class="admin-button admin-button--primary">Save collections <i class="ph ph-check"></i></button></div>
+</form>
+                    </div>
+    </main>
+</div>
+<script src="assets/admin.js" defer></script>
+<script src="assets/content-editor.js" defer></script>
+</body>
+</html>
