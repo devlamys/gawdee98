@@ -13,12 +13,13 @@ $headerCustomer = gawdee_customer();
 $isReferenceProductPage = str_contains($bodyClass, 'product-page--reference');
 $isCommerceHome = str_contains($bodyClass, 'commerce-home');
 $fontStacks = [
-    'system' => '-apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif',
-    'arial' => 'Arial, Helvetica, sans-serif',
-    'dm-sans' => '"DM Sans", Arial, sans-serif',
+    'system' => '"Inter", system-ui, -apple-system, "Segoe UI", sans-serif',
+    'inter' => '"Inter", system-ui, -apple-system, "Segoe UI", sans-serif',
+    'arial' => '"Inter", system-ui, -apple-system, "Segoe UI", sans-serif',
+    'dm-sans' => '"Inter", system-ui, -apple-system, "Segoe UI", sans-serif',
 ];
-$siteBodyFont = $fontStacks[gawdee_setting('site_body_font', 'system')] ?? $fontStacks['system'];
-$siteHeadingFont = $fontStacks[gawdee_setting('site_heading_font', 'system')] ?? $fontStacks['system'];
+$siteBodyFont = '"Inter", system-ui, -apple-system, "Segoe UI", sans-serif';
+$siteHeadingFont = '"Inter", system-ui, -apple-system, "Segoe UI", sans-serif';
 $siteBaseFontSize = min(20, max(14, (int) gawdee_setting('site_base_font_size', '16')));
 $styleVersion = (string) max(
     (int) @filemtime(__DIR__ . '/../assets/css/style.css'),
@@ -31,14 +32,13 @@ $styleVersion = (string) max(
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#009d8a">
+    <meta name="theme-color" content="#009a84">
     <meta name="description" content="<?= htmlspecialchars($pageDescription) ?>">
     <meta name="gawdee-csrf" content="<?= htmlspecialchars(gawdee_csrf_token()) ?>">
     <title><?= htmlspecialchars($pageTitle) ?></title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=DM+Sans:wght@400;500;600;700&family=Lora:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
@@ -47,7 +47,7 @@ $styleVersion = (string) max(
     <link rel="stylesheet" href="assets/css/storefront-modern.css?v=<?= rawurlencode($styleVersion) ?>">
     <link rel="stylesheet" href="assets/css/reference-sections.css?v=<?= (int)@filemtime(__DIR__.'/../assets/css/reference-sections.css') ?>">
     <link rel="stylesheet" href="assets/css/site-chrome.css?v=<?= (int)@filemtime(__DIR__.'/../assets/css/site-chrome.css') ?>">
-    <style>:root{--sf-green:<?= htmlspecialchars($siteDesign['brand_color']) ?>;--sf-accent:<?= htmlspecialchars($siteDesign['brand_accent']) ?>;--site-body-font:<?= $siteBodyFont ?>;--site-heading-font:<?= $siteHeadingFont ?>;--site-base-font-size:<?= $siteBaseFontSize ?>px}</style>
+    <style>:root{--sf-green:#009a84;--sf-accent:#c19a3d;--site-body-font:<?= $siteBodyFont ?>;--site-heading-font:<?= $siteHeadingFont ?>;--site-base-font-size:<?= $siteBaseFontSize ?>px}</style>
     <script>document.documentElement.classList.add('js');</script>
 </head>
 <body class="<?= htmlspecialchars($bodyClass) ?> sf-modern" data-density="<?= htmlspecialchars($siteDesign['site_density']) ?>">

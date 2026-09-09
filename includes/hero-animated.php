@@ -13,65 +13,85 @@ $gxHeroSlides = [
         'title' => 'A2 Vedic<br><span>Gir Cow Ghee</span>',
         'word' => 'GHEE',
         'sub' => 'Pure & Healthy Gir Cow A2 Ghee hand-churned using traditional Bilona method. Nutty, aromatic & nourishing.',
-        'priceLabel' => '₹899', 'mrpLabel' => '₹1,099', 'off' => 'Save 18%',
+        'priceLabel' => '₹899',
+        'mrpLabel' => '₹1,099',
+        'off' => 'Save 18%',
         'reviews' => '4.9 — 2,340 rituals',
         'img' => 'assets/images/hero-animated/ghee.png',
         'alt' => 'GAWDEE Pure Gir Cow A2 Bilona Ghee Jar',
         'url' => 'product.php?slug=gawdee-gir-cow-a2-ghee-500-ml',
-        'cartId' => 'ghee-500', 'cartName' => 'Gawdee Gir Cow A2 Ghee 500ml',
-        'cartPrice' => 891, 'cartImage' => 'assets/images/products/ghee-500.webp',
+        'cartId' => 'ghee-500',
+        'cartName' => 'Gawdee Gir Cow A2 Ghee 500ml',
+        'cartPrice' => 891,
+        'cartImage' => 'assets/images/products/ghee-500.webp',
     ],
     [
         'cat' => '100% Natural • Homemade Taste',
         'title' => 'MixMe Powder<br><span>Vanilla Flavour</span>',
         'word' => 'MIXME',
         'sub' => 'Nutritive food powder for kids (2+ yrs) & adults. Packed with Ashwagandha, Shatavari, Brahmi, Peanut & Dates.',
-        'priceLabel' => '₹649', 'mrpLabel' => '₹799', 'off' => 'Save 19%',
+        'priceLabel' => '₹649',
+        'mrpLabel' => '₹799',
+        'off' => 'Save 19%',
         'reviews' => '4.8 — 1,870 rituals',
         'img' => 'assets/images/hero-animated/mixme-vanilla.png',
         'alt' => 'GAWDEE MixMe Nutritive Food Powder Vanilla Flavour Pouch',
         'url' => 'product.php?slug=gawdee-mixme-choco-500-g',
-        'cartId' => 'mixme-choco', 'cartName' => 'Gawdee MixMe — Choco 500g',
-        'cartPrice' => 759, 'cartImage' => 'assets/images/products/mixme-choco.webp',
+        'cartId' => 'mixme-choco',
+        'cartName' => 'Gawdee MixMe — Choco 500g',
+        'cartPrice' => 759,
+        'cartImage' => 'assets/images/products/mixme-choco.webp',
     ],
     [
         'cat' => '100% Natural • Homemade Taste',
         'title' => 'MixMe Powder<br><span>Cardamom Flavour</span>',
         'word' => 'MIXME',
         'sub' => 'Nutritive food powder blend with Vavding, Ganthoda, Brahmi & Shankhpushpi in soothing Cardamom flavour.',
-        'priceLabel' => '₹649', 'mrpLabel' => '₹799', 'off' => 'Save 19%',
+        'priceLabel' => '₹649',
+        'mrpLabel' => '₹799',
+        'off' => 'Save 19%',
         'reviews' => '4.9 — 2,110 rituals',
         'img' => 'assets/images/hero-animated/mixme-cardamom.png',
         'alt' => 'GAWDEE MixMe Nutritive Food Powder Cardamom Flavour Pouch',
         'url' => 'product.php?slug=gawdee-mixme-elaichi-500-g',
-        'cartId' => 'mixme-elaichi', 'cartName' => 'Gawdee MixMe — Elaichi 500g',
-        'cartPrice' => 759, 'cartImage' => 'assets/images/products/mixme-elaichi.webp',
+        'cartId' => 'mixme-elaichi',
+        'cartName' => 'Gawdee MixMe — Elaichi 500g',
+        'cartPrice' => 759,
+        'cartImage' => 'assets/images/products/mixme-elaichi.webp',
     ],
     [
         'cat' => 'Traditional • Unrefined Sweetness',
         'title' => 'Organic Jaggery<br><span>Fine Powder 1kg</span>',
         'word' => 'JAGGERY',
         'sub' => 'Naturally processed with zero chemical processing. Fine powder texture for tea, milk, sweets, laddoo & halwa.',
-        'priceLabel' => '₹299', 'mrpLabel' => '₹399', 'off' => 'Save 25%',
+        'priceLabel' => '₹299',
+        'mrpLabel' => '₹399',
+        'off' => 'Save 25%',
         'reviews' => '4.9 — 3,102 rituals',
         'img' => 'assets/images/hero-animated/jaggery.png',
         'alt' => 'GAWDEE Organic Jaggery Powder 1kg Pouch',
         'url' => 'products.php?category=sugar',
-        'cartId' => 'burra-sugar', 'cartName' => 'Gawdee Burra Sugar 1kg',
-        'cartPrice' => 159, 'cartImage' => 'assets/images/products/burra-sugar.webp',
+        'cartId' => 'burra-sugar',
+        'cartName' => 'Gawdee Burra Sugar 1kg',
+        'cartPrice' => 159,
+        'cartImage' => 'assets/images/products/burra-sugar.webp',
     ],
     [
         'cat' => 'Authentic Nasya • Belly Button Drops',
         'title' => 'Taral Drop<br><span>(Nasya) 30ml</span>',
         'word' => 'TARAL',
         'sub' => 'Authentic organic nutrition drops for nose & belly button. Boosts clarity, breath & natural wellness.',
-        'priceLabel' => '₹399', 'mrpLabel' => '₹499', 'off' => 'Save 20%',
+        'priceLabel' => '₹399',
+        'mrpLabel' => '₹499',
+        'off' => 'Save 20%',
         'reviews' => '4.7 — 940 rituals',
         'img' => 'assets/images/hero-animated/taral.png',
         'alt' => 'GAWDEE Taral Drop Nasya Bottle 30ml',
         'url' => 'product.php?slug=gawdee-taral-drop-30-ml',
-        'cartId' => 'taral-drop', 'cartName' => 'Gawdee Taral Drop 30ml',
-        'cartPrice' => 209, 'cartImage' => 'assets/images/products/taral-drop.webp',
+        'cartId' => 'taral-drop',
+        'cartName' => 'Gawdee Taral Drop 30ml',
+        'cartPrice' => 209,
+        'cartImage' => 'assets/images/products/taral-drop.webp',
     ],
 ];
 $gxFirst = $gxHeroSlides[0];
@@ -82,7 +102,8 @@ $gxJsV = (int) @filemtime(__DIR__ . '/../assets/js/hero-animated.js');
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script type="application/json" id="gxHeroData"><?= json_encode($gxHeroSlides, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) ?></script>
+<script type="application/json"
+    id="gxHeroData"><?= json_encode($gxHeroSlides, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) ?></script>
 
 <section class="gx-hero grain" aria-label="Featured organic products">
     <div class="gx-hero__bg" aria-hidden="true">
@@ -91,7 +112,7 @@ $gxJsV = (int) @filemtime(__DIR__ . '/../assets/js/hero-animated.js');
     </div>
     <div class="gx-hero__glow gx-hero__glow--left" aria-hidden="true"></div>
     <div class="gx-hero__glow gx-hero__glow--right" aria-hidden="true"></div>
-    <div class="gx-hero__word" id="gxWord" aria-hidden="true"><?= htmlspecialchars($gxFirst['word']) ?></div>
+    <!-- <div class="gx-hero__word" id="gxWord" aria-hidden="true"><?= htmlspecialchars($gxFirst['word']) ?></div> -->
 
     <div class="gx-hero__grid">
         <div class="gx-hero__copy">
@@ -119,8 +140,7 @@ $gxJsV = (int) @filemtime(__DIR__ . '/../assets/js/hero-animated.js');
                 <a class="gx-btn-lux" id="gxShopBtn" href="<?= htmlspecialchars($gxFirst['url']) ?>">
                     Shop Now <span class="gx-btn-lux__arrow">→</span>
                 </a>
-                <button type="button" class="gx-btn-cart" id="gxCartBtn"
-                    data-add-to-cart
+                <button type="button" class="gx-btn-cart" id="gxCartBtn" data-add-to-cart
                     data-id="<?= htmlspecialchars($gxFirst['cartId']) ?>"
                     data-name="<?= htmlspecialchars($gxFirst['cartName']) ?>"
                     data-price="<?= (int) $gxFirst['cartPrice'] ?>"
@@ -131,11 +151,15 @@ $gxJsV = (int) @filemtime(__DIR__ . '/../assets/js/hero-animated.js');
 
             <div class="gx-hero__controls gx-intro">
                 <div class="gx-hero__arrows">
-                    <button type="button" class="gx-arrow gx-arrow--ghost" id="gxPrev" aria-label="Previous product">←</button>
-                    <button type="button" class="gx-arrow gx-arrow--solid" id="gxNext" aria-label="Next product">→</button>
+                    <button type="button" class="gx-arrow gx-arrow--ghost" id="gxPrev"
+                        aria-label="Previous product">←</button>
+                    <button type="button" class="gx-arrow gx-arrow--solid" id="gxNext"
+                        aria-label="Next product">→</button>
                 </div>
                 <div class="gx-hero__dots" id="gxDots"></div>
-                <div class="gx-hero__progress" aria-hidden="true"><div id="gxProgressBar"></div></div>
+                <div class="gx-hero__progress" aria-hidden="true">
+                    <div id="gxProgressBar"></div>
+                </div>
             </div>
 
             <div class="gx-hero__trust gx-intro">
