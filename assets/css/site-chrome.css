@@ -1,0 +1,52 @@
+/* Site-wide shared chrome + design tokens.
+   Source of truth: Animated Hero (includes/hero-animated.php +
+   assets/css/hero-animated.css). Centralises exact tokens and reuses
+   existing classes — never restyles .gx-hero itself. */
+
+:root {
+  --gx-cream: #fff8f1;
+  --gx-sage: #9dd0b6;
+  --gx-ink: #009a84;
+  --gx-espresso: #009a84;
+  --gx-gold: #c19a3d;
+  --gx-font: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+/* Global font + color language derived from Animated Hero.
+   Wins over inline :root vars for everything inside <body>. */
+body.sf-modern {
+  --site-body-font: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --site-heading-font: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --sf-green: var(--gx-ink);
+  --sf-accent: var(--gx-gold);
+  --brand: var(--gx-ink);
+  --brand-deep: #007a68;
+  --brand-dark: #005c4e;
+  --brand-pale: #e6f6f3;
+  --green: var(--gx-ink);
+  --forest: #005c4e;
+  --pdp-green: var(--gx-ink);
+  --pdp-dark: #005c4e;
+  font-family: var(--gx-font);
+}
+
+body.sf-modern h1,
+body.sf-modern h2,
+body.sf-modern h3,
+body.sf-modern h4,
+body.sf-modern h5,
+body.sf-modern h6 {
+  font-family: var(--gx-font);
+}
+
+/* Inner pages: clear the global absolute preheader (.sf-reference-promo).
+   Homepage (.sf-home) keeps its own 67px margin untouched. */
+body.sf-modern:not(.sf-home) .commerce-header {
+  margin-top: 58px;
+}
+
+@media (max-width: 960px) {
+  body.sf-modern:not(.sf-home) .commerce-header {
+    margin-top: 44px;
+  }
+}

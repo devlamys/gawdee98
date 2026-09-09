@@ -38,6 +38,7 @@ $styleVersion = (string) max(
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=DM+Sans:wght@400;500;600;700&family=Lora:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
@@ -45,15 +46,15 @@ $styleVersion = (string) max(
     <link rel="stylesheet" href="assets/css/gawdee-reference.css?v=<?= rawurlencode($styleVersion) ?>">
     <link rel="stylesheet" href="assets/css/storefront-modern.css?v=<?= rawurlencode($styleVersion) ?>">
     <link rel="stylesheet" href="assets/css/reference-sections.css?v=<?= (int)@filemtime(__DIR__.'/../assets/css/reference-sections.css') ?>">
+    <link rel="stylesheet" href="assets/css/site-chrome.css?v=<?= (int)@filemtime(__DIR__.'/../assets/css/site-chrome.css') ?>">
     <style>:root{--sf-green:<?= htmlspecialchars($siteDesign['brand_color']) ?>;--sf-accent:<?= htmlspecialchars($siteDesign['brand_accent']) ?>;--site-body-font:<?= $siteBodyFont ?>;--site-heading-font:<?= $siteHeadingFont ?>;--site-base-font-size:<?= $siteBaseFontSize ?>px}</style>
     <script>document.documentElement.classList.add('js');</script>
 </head>
 <body class="<?= htmlspecialchars($bodyClass) ?> sf-modern" data-density="<?= htmlspecialchars($siteDesign['site_density']) ?>">
 <a class="skip-link" href="#main-content">Skip to content</a>
 
-<?php if($isCommerceHome && $siteDesign['header_benefit_strip'] === '1'): ?>
-<div class="sf-reference-promo" aria-label="The Gawdee promise"><ul><?php foreach($siteCollections['header_benefits'] as $benefit): ?><li><i class="ph <?= htmlspecialchars($benefit['icon']) ?>" aria-hidden="true"></i><span><?= htmlspecialchars(str_replace('{threshold}',number_format((int)gawdee_setting('free_shipping_threshold','999')),$benefit['title'])) ?></span></li><?php endforeach; ?></ul><span class="sf-reference-promo__tagline"><?= htmlspecialchars($siteDesign['brand_tagline']) ?></span></div>
-<?php else: ?><div class="promo-strip sf-announcement"><a href="<?= htmlspecialchars(gawdee_public_url($siteDesign['announcement_url'],'products.php')) ?>"><i class="ph ph-leaf" aria-hidden="true"></i><?= htmlspecialchars(str_replace('{threshold}', number_format((int)gawdee_setting('free_shipping_threshold','999')), $siteDesign['announcement_text'])) ?></a><span><?= htmlspecialchars($siteDesign['brand_tagline']) ?></span></div><?php endif; ?>
+<?php /* Shared preheader + header: single source (includes/preheader.php + markup below). */ ?>
+<?php require __DIR__ . '/preheader.php'; ?>
 
 <header class="commerce-header" data-header>
     <div class="commerce-header__float">
