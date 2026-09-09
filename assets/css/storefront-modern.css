@@ -57,6 +57,7 @@
 .sf-values h3 { margin:0; font-size:.88rem; line-height:1.35; font-weight:650; }
 .sf-values p { margin:5px 0 0; color:var(--sf-muted); font-size:.8rem; }
 .sf-trust-strip { padding:22px 0; border-bottom:1px solid var(--sf-line); }
+.sf-trust-strip .sf-value-icon > i, .sf-trust-strip .sf-values article > i, .sf-trust-strip i { color:#009A84; }
 .sf-categories { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:12px; }
 .sf-category { min-width:0; position:relative; display:flex; min-height:168px; padding:17px; overflow:hidden; border:1px solid #e1e9dd; border-radius:14px; background:linear-gradient(120deg,#edf3e7,#f7f8f1); }
 .sf-category:nth-child(even) { background:linear-gradient(120deg,#faf2e1,#faf6ee); }
