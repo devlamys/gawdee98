@@ -4,7 +4,20 @@ $db = gawdee_db();
 $hour = (int) date('G');
 $greeting = $hour < 12 ? 'Good morning' : ($hour < 18 ? 'Good afternoon' : 'Good evening');
 $lowStockThreshold = max(1, (int) gawdee_setting('low_stock_threshold', '12'));
-$dashboardMetrics = $db->query(<<<'SQL'
+$dashboardMetrics = ($db->getAttribute(PDO::ATTR_DRIVER_NAME) === 'mysql')
+    ? $db->query(<<<'SQL'
+SELECT
+    COUNT(*) AS total_orders,
+    SUM(CASE WHEN payment_status='paid' THEN total ELSE 0 END) AS lifetime_revenue,
+    SUM(CASE WHEN payment_status='paid' AND DATE_FORMAT(paid_at, '%Y-%m')=DATE_FORMAT(NOW(), '%Y-%m') THEN total ELSE 0 END) AS month_revenue,
+    SUM(CASE WHEN payment_status='paid' AND DATE_FORMAT(paid_at, '%Y-%m')=DATE_FORMAT(NOW() - INTERVAL 1 MONTH, '%Y-%m') THEN total ELSE 0 END) AS last_month_revenue,
+    SUM(CASE WHEN DATE(created_at)=CURDATE() THEN 1 ELSE 0 END) AS today_orders,
+    SUM(CASE WHEN status IN ('pending','on_hold') OR payment_status IN ('initializing','failed') THEN 1 ELSE 0 END) AS attention,
+    SUM(CASE WHEN status IN ('processing','packed') THEN 1 ELSE 0 END) AS to_fulfil,
+    ROUND(AVG(CASE WHEN payment_status='paid' THEN total END)) AS average_order
+FROM orders
+SQL)->fetch() ?: []
+    : $db->query(<<<'SQL'
 SELECT
     COUNT(*) AS total_orders,
     SUM(CASE WHEN payment_status='paid' THEN total ELSE 0 END) AS lifetime_revenue,
@@ -24,7 +37,10 @@ $customerCount = (int) $db->query("SELECT COUNT(*) FROM users WHERE role='custom
 $activeProducts = (int) $db->query('SELECT COUNT(*) FROM products WHERE is_active=1')->fetchColumn();
 $lowStockProducts = (int) $db->query('SELECT COUNT(*) FROM products WHERE is_active=1 AND stock <= ' . $lowStockThreshold)->fetchColumn();
 
-$dailyRows = $db->query("SELECT date(created_at) AS day, COUNT(*) AS orders, SUM(CASE WHEN payment_status='paid' THEN total ELSE 0 END) AS revenue FROM orders WHERE created_at >= date('now','-13 days') GROUP BY date(created_at)")->fetchAll();
+$dailySql = ($db->getAttribute(PDO::ATTR_DRIVER_NAME) === 'mysql')
+    ? "SELECT DATE(created_at) AS day, COUNT(*) AS orders, SUM(CASE WHEN payment_status='paid' THEN total ELSE 0 END) AS revenue FROM orders WHERE created_at >= (CURDATE() - INTERVAL 13 DAY) GROUP BY DATE(created_at)"
+    : "SELECT date(created_at) AS day, COUNT(*) AS orders, SUM(CASE WHEN payment_status='paid' THEN total ELSE 0 END) AS revenue FROM orders WHERE created_at >= date('now','-13 days') GROUP BY date(created_at)";
+$dailyRows = $db->query($dailySql)->fetchAll();
 $dailyByDate = [];
 foreach ($dailyRows as $row) {
     $dailyByDate[$row['day']] = $row;

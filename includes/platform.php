@@ -6,7 +6,63 @@ const GAWDEE_ROOT = __DIR__ . '/..';
 const GAWDEE_STORAGE = GAWDEE_ROOT . '/storage';
 if (!defined('GAWDEE_DB')) define('GAWDEE_DB', GAWDEE_STORAGE . '/gawdee.sqlite');
 
-if (PHP_SAPI !== 'cli' && session_status() !== PHP_SESSION_ACTIVE) {
+function gawdee_load_env(?string $path = null): void
+{
+    static $loaded = false;
+    if ($loaded) {
+        return;
+    }
+    $path = $path ?? (defined('GAWDEE_ROOT') ? GAWDEE_ROOT . '/.env' : __DIR__ . '/../.env');
+    if (file_exists($path) && is_readable($path)) {
+        $lines = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        foreach ($lines as $line) {
+            $line = trim($line);
+            if ($line === '' || str_starts_with($line, '#')) {
+                continue;
+            }
+            if (strpos($line, '=') !== false) {
+                list($key, $value) = explode('=', $line, 2);
+                $key = trim($key);
+                $value = trim($value);
+                if ((str_starts_with($value, '"') && str_ends_with($value, '"')) ||
+                    (str_starts_with($value, "'") && str_ends_with($value, "'"))) {
+                    $value = substr($value, 1, -1);
+                }
+                if (!array_key_exists($key, $_ENV)) {
+                    $_ENV[$key] = $value;
+                }
+                if (!array_key_exists($key, $_SERVER)) {
+                    $_SERVER[$key] = $value;
+                }
+                putenv("{$key}={$value}");
+            }
+        }
+    }
+    $loaded = true;
+}
+
+function gawdee_env(string $key, mixed $default = null): mixed
+{
+    gawdee_load_env();
+    $val = $_ENV[$key] ?? $_SERVER[$key] ?? getenv($key);
+    if ($val === false || $val === null || $val === '') {
+        return $default;
+    }
+    return $val;
+}
+
+function gawdee_sql(PDO $db, string $sql): string
+{
+    if ($db->getAttribute(PDO::ATTR_DRIVER_NAME) === 'mysql') {
+        return str_ireplace('INSERT OR IGNORE', 'INSERT IGNORE', $sql);
+    }
+    return $sql;
+}
+
+// Automatically load .env at platform initialization
+gawdee_load_env();
+
+if (PHP_SAPI !== 'cli' && session_status() !== PHP_SESSION_ACTIVE && !headers_sent()) {
     session_name('gawdee_session');
     session_set_cookie_params([
         'httponly' => true,
@@ -24,18 +80,48 @@ function gawdee_db(): PDO
         return $pdo;
     }
 
-    if (!is_dir(GAWDEE_STORAGE)) {
-        mkdir(GAWDEE_STORAGE, 0750, true);
+    gawdee_load_env();
+    $driver = strtolower((string) gawdee_env('DB_DRIVER', 'sqlite'));
+
+    if ($driver === 'mysql') {
+        $host = (string) gawdee_env('DB_HOST', '127.0.0.1');
+        $port = (string) gawdee_env('DB_PORT', '3306');
+        $dbname = (string) gawdee_env('DB_DATABASE', '');
+        $username = (string) gawdee_env('DB_USERNAME', 'root');
+        $password = (string) gawdee_env('DB_PASSWORD', '');
+
+        $dsn = "mysql:host={$host};port={$port};dbname={$dbname};charset=utf8mb4";
+        try {
+            $pdo = new PDO($dsn, $username, $password, [
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                PDO::ATTR_EMULATE_PREPARES => false,
+                PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8mb4"
+            ]);
+        } catch (PDOException $e) {
+            if (PHP_SAPI === 'cli' || in_array($_SERVER['REMOTE_ADDR'] ?? '127.0.0.1', ['127.0.0.1', '::1'], true)) {
+                $driver = 'sqlite';
+            } else {
+                throw $e;
+            }
+        }
     }
 
-    $pdo = new PDO('sqlite:' . GAWDEE_DB, null, null, [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-        PDO::ATTR_EMULATE_PREPARES => false,
-    ]);
-    $pdo->exec('PRAGMA foreign_keys = ON');
-    $pdo->exec('PRAGMA journal_mode = WAL');
-    $pdo->exec('PRAGMA busy_timeout = 5000');
+    if ($driver === 'sqlite') {
+        if (!is_dir(GAWDEE_STORAGE)) {
+            mkdir(GAWDEE_STORAGE, 0750, true);
+        }
+
+        $pdo = new PDO('sqlite:' . GAWDEE_DB, null, null, [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::ATTR_EMULATE_PREPARES => false,
+        ]);
+        $pdo->exec('PRAGMA foreign_keys = ON');
+        $pdo->exec('PRAGMA journal_mode = WAL');
+        $pdo->exec('PRAGMA busy_timeout = 5000');
+    }
+
     gawdee_migrate($pdo);
 
     return $pdo;
@@ -43,7 +129,351 @@ function gawdee_db(): PDO
 
 function gawdee_migrate(PDO $db): void
 {
-    $db->exec(<<<'SQL'
+    $driver = $db->getAttribute(PDO::ATTR_DRIVER_NAME);
+
+    if ($driver === 'mysql') {
+        $db->exec(<<<'SQL'
+CREATE TABLE IF NOT EXISTS users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(191) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    role VARCHAR(50) NOT NULL DEFAULT 'admin',
+    phone VARCHAR(50) NOT NULL DEFAULT '',
+    address1 TEXT,
+    address2 TEXT,
+    city VARCHAR(100) NOT NULL DEFAULT '',
+    state VARCHAR(100) NOT NULL DEFAULT '',
+    pincode VARCHAR(20) NOT NULL DEFAULT '',
+    whatsapp_marketing_opt_in TINYINT NOT NULL DEFAULT 0,
+    whatsapp_marketing_opt_in_at DATETIME NULL,
+    whatsapp_opt_out_at DATETIME NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    last_login_at DATETIME NULL,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS settings (
+    setting_key VARCHAR(191) PRIMARY KEY,
+    setting_value LONGTEXT,
+    is_secret TINYINT NOT NULL DEFAULT 0,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS saved_products (
+    user_id INT NOT NULL,
+    item_key VARCHAR(191) NOT NULL,
+    product_ids TEXT NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (user_id, item_key)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS products (
+    id VARCHAR(191) PRIMARY KEY,
+    slug VARCHAR(191) NOT NULL UNIQUE,
+    name VARCHAR(255) NOT NULL,
+    full_name VARCHAR(255) NOT NULL,
+    category VARCHAR(100) NOT NULL,
+    category_key VARCHAR(191) NOT NULL,
+    tag VARCHAR(100) NOT NULL DEFAULT '',
+    price INT NOT NULL,
+    original_price INT NOT NULL,
+    weight VARCHAR(50) NOT NULL DEFAULT '',
+    image TEXT,
+    description LONGTEXT,
+    accent VARCHAR(20) NOT NULL DEFAULT '#0a7540',
+    stock INT NOT NULL DEFAULT 100,
+    stock_status VARCHAR(50) NOT NULL DEFAULT 'in_stock',
+    sku VARCHAR(100) NOT NULL DEFAULT '',
+    source_id VARCHAR(100) NOT NULL DEFAULT '',
+    source_url TEXT,
+    rating DOUBLE NOT NULL DEFAULT 0,
+    review_count INT NOT NULL DEFAULT 0,
+    gallery_json LONGTEXT,
+    details_json LONGTEXT,
+    is_active TINYINT NOT NULL DEFAULT 1,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS banners (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    desktop_image TEXT NOT NULL,
+    mobile_image TEXT,
+    link_url TEXT,
+    alt_text TEXT,
+    sort_order INT NOT NULL DEFAULT 0,
+    is_active TINYINT NOT NULL DEFAULT 1,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS cms_sections (
+    section_key VARCHAR(191) PRIMARY KEY,
+    eyebrow VARCHAR(255) NOT NULL DEFAULT '',
+    title VARCHAR(255) NOT NULL DEFAULT '',
+    subtitle VARCHAR(255) NOT NULL DEFAULT '',
+    body LONGTEXT,
+    image TEXT,
+    mobile_image TEXT,
+    video_url TEXT,
+    button_label VARCHAR(100) NOT NULL DEFAULT '',
+    button_url TEXT,
+    is_active TINYINT NOT NULL DEFAULT 1,
+    sort_order INT NOT NULL DEFAULT 0,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS testimonials (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    initials VARCHAR(10) NOT NULL DEFAULT '',
+    avatar TEXT,
+    product_name VARCHAR(255) NOT NULL DEFAULT '',
+    product_slug VARCHAR(191) NOT NULL DEFAULT '',
+    quote TEXT NOT NULL,
+    rating INT NOT NULL DEFAULT 5,
+    theme VARCHAR(50) NOT NULL DEFAULT 'ghee',
+    sort_order INT NOT NULL DEFAULT 0,
+    is_active TINYINT NOT NULL DEFAULT 1,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS homepage_media (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    section_key VARCHAR(100) NOT NULL DEFAULT 'reels',
+    media_type VARCHAR(50) NOT NULL DEFAULT 'image',
+    title VARCHAR(255) NOT NULL DEFAULT '',
+    subtitle VARCHAR(255) NOT NULL DEFAULT '',
+    file_path TEXT,
+    poster_path TEXT,
+    external_url TEXT,
+    link_url TEXT,
+    alt_text TEXT,
+    product_slug VARCHAR(191) NOT NULL DEFAULT '',
+    sort_order INT NOT NULL DEFAULT 0,
+    is_active TINYINT NOT NULL DEFAULT 1,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS video_testimonials (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    role_location VARCHAR(255) NOT NULL DEFAULT '',
+    quote TEXT,
+    rating INT NOT NULL DEFAULT 5,
+    video_type VARCHAR(50) NOT NULL DEFAULT 'upload',
+    video_path TEXT,
+    poster_path TEXT,
+    external_url TEXT,
+    sort_order INT NOT NULL DEFAULT 0,
+    is_active TINYINT NOT NULL DEFAULT 1,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS cms_section_items (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    section_key VARCHAR(100) NOT NULL,
+    icon VARCHAR(100) NOT NULL DEFAULT 'ph-leaf',
+    title VARCHAR(255) NOT NULL,
+    subtitle VARCHAR(255) NOT NULL DEFAULT '',
+    image TEXT,
+    link_url TEXT,
+    sort_order INT NOT NULL DEFAULT 0,
+    is_active TINYINT NOT NULL DEFAULT 1,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS blog_posts (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    slug VARCHAR(191) NOT NULL UNIQUE,
+    excerpt TEXT,
+    content LONGTEXT NOT NULL,
+    status VARCHAR(50) NOT NULL DEFAULT 'draft',
+    source VARCHAR(50) NOT NULL DEFAULT 'manual',
+    ai_provider VARCHAR(50) NOT NULL DEFAULT '',
+    meta_description TEXT,
+    featured_image TEXT,
+    category VARCHAR(100) NOT NULL DEFAULT 'Wellness',
+    author VARCHAR(100) NOT NULL DEFAULT 'Gawdee editorial',
+    is_featured TINYINT NOT NULL DEFAULT 0,
+    published_at DATETIME NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS orders (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NULL,
+    order_number VARCHAR(191) NOT NULL UNIQUE,
+    status VARCHAR(50) NOT NULL DEFAULT 'pending',
+    payment_method VARCHAR(50) NOT NULL DEFAULT 'razorpay',
+    payment_status VARCHAR(50) NOT NULL DEFAULT 'pending',
+    shipment_status VARCHAR(50) NOT NULL DEFAULT 'not_created',
+    currency VARCHAR(10) NOT NULL DEFAULT 'INR',
+    subtotal INT NOT NULL,
+    shipping INT NOT NULL DEFAULT 0,
+    discount INT NOT NULL DEFAULT 0,
+    total INT NOT NULL,
+    coupon_code VARCHAR(50) NOT NULL DEFAULT '',
+    checkout_token VARCHAR(191) NOT NULL DEFAULT '',
+    customer_name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    phone VARCHAR(50) NOT NULL,
+    address1 TEXT NOT NULL,
+    address2 TEXT,
+    city VARCHAR(100) NOT NULL,
+    state VARCHAR(100) NOT NULL,
+    pincode VARCHAR(20) NOT NULL,
+    notes TEXT,
+    razorpay_order_id VARCHAR(191) NOT NULL DEFAULT '',
+    razorpay_payment_id VARCHAR(191) NOT NULL DEFAULT '',
+    razorpay_signature VARCHAR(255) NOT NULL DEFAULT '',
+    dtdc_reference VARCHAR(100) NOT NULL DEFAULT '',
+    dtdc_tracking_url TEXT,
+    fulfillment_mode VARCHAR(50) NOT NULL DEFAULT 'manual',
+    courier_name VARCHAR(100) NOT NULL DEFAULT '',
+    tracking_number VARCHAR(100) NOT NULL DEFAULT '',
+    tracking_url TEXT,
+    inventory_status VARCHAR(50) NOT NULL DEFAULT 'not_deducted',
+    source VARCHAR(50) NOT NULL DEFAULT 'storefront',
+    admin_note TEXT,
+    payment_error TEXT,
+    paid_at DATETIME NULL,
+    fulfilled_at DATETIME NULL,
+    cancelled_at DATETIME NULL,
+    delhivery_waybill VARCHAR(100) NOT NULL DEFAULT '',
+    delhivery_tracking_url TEXT,
+    delhivery_label_url TEXT,
+    delhivery_last_status VARCHAR(100) NOT NULL DEFAULT '',
+    delhivery_last_sync_at DATETIME NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS order_items (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    order_id INT NOT NULL,
+    product_id VARCHAR(191) NOT NULL,
+    product_name VARCHAR(255) NOT NULL,
+    quantity INT NOT NULL,
+    unit_price INT NOT NULL,
+    image TEXT,
+    FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS inventory_events (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    product_id VARCHAR(191) NOT NULL,
+    order_id INT NULL,
+    adjustment INT NOT NULL,
+    balance_after INT NOT NULL,
+    reason VARCHAR(255) NOT NULL,
+    created_by INT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
+    FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE SET NULL,
+    FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS integration_logs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    integration VARCHAR(100) NOT NULL,
+    action VARCHAR(100) NOT NULL,
+    status VARCHAR(50) NOT NULL,
+    reference VARCHAR(191) NOT NULL DEFAULT '',
+    message TEXT,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS subscribers (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(191) NOT NULL UNIQUE,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS product_reviews (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    product_id VARCHAR(191) NOT NULL,
+    rating INT NOT NULL,
+    review TEXT NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    status VARCHAR(50) NOT NULL DEFAULT 'approved',
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS order_status_events (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    order_id INT NOT NULL,
+    status VARCHAR(50) NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS customer_otps (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NULL,
+    phone VARCHAR(50) NOT NULL,
+    purpose VARCHAR(50) NOT NULL DEFAULT 'login',
+    code_hash VARCHAR(255) NOT NULL,
+    expires_at DATETIME NOT NULL,
+    attempts INT NOT NULL DEFAULT 0,
+    requested_ip_hash VARCHAR(100) NOT NULL DEFAULT '',
+    status VARCHAR(50) NOT NULL DEFAULT 'pending',
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    consumed_at DATETIME NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS notification_queue (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    order_id INT NULL,
+    user_id INT NULL,
+    channel VARCHAR(50) NOT NULL DEFAULT 'whatsapp',
+    notification_type VARCHAR(100) NOT NULL,
+    recipient VARCHAR(100) NOT NULL,
+    template_name VARCHAR(100) NOT NULL,
+    language VARCHAR(20) NOT NULL DEFAULT 'en_US',
+    variables_json LONGTEXT,
+    dedupe_key VARCHAR(191) NOT NULL UNIQUE,
+    status VARCHAR(50) NOT NULL DEFAULT 'queued',
+    attempts INT NOT NULL DEFAULT 0,
+    provider_message_id VARCHAR(191) NOT NULL DEFAULT '',
+    error_message TEXT,
+    scheduled_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    sent_at DATETIME NULL,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE SET NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS webhook_events (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    provider VARCHAR(100) NOT NULL,
+    event_key VARCHAR(191) NOT NULL,
+    event_type VARCHAR(100) NOT NULL DEFAULT '',
+    payload_hash VARCHAR(100) NOT NULL,
+    status VARCHAR(50) NOT NULL DEFAULT 'received',
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    processed_at DATETIME NULL,
+    UNIQUE(provider, event_key)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+SQL);
+    } else {
+        $db->exec(<<<'SQL'
 CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
@@ -375,100 +805,116 @@ CREATE TABLE IF NOT EXISTS webhook_events (
     UNIQUE(provider, event_key)
 );
 SQL);
+    }
 
     foreach ([
-        'phone' => "TEXT NOT NULL DEFAULT ''",
-        'address1' => "TEXT NOT NULL DEFAULT ''",
-        'address2' => "TEXT NOT NULL DEFAULT ''",
-        'city' => "TEXT NOT NULL DEFAULT ''",
-        'state' => "TEXT NOT NULL DEFAULT ''",
-        'pincode' => "TEXT NOT NULL DEFAULT ''",
-        'whatsapp_marketing_opt_in' => 'INTEGER NOT NULL DEFAULT 0',
-        'whatsapp_marketing_opt_in_at' => 'TEXT',
-        'whatsapp_opt_out_at' => 'TEXT',
-        'updated_at' => "TEXT NOT NULL DEFAULT ''",
+        'phone' => "VARCHAR(50) NOT NULL DEFAULT ''",
+        'address1' => "TEXT",
+        'address2' => "TEXT",
+        'city' => "VARCHAR(100) NOT NULL DEFAULT ''",
+        'state' => "VARCHAR(100) NOT NULL DEFAULT ''",
+        'pincode' => "VARCHAR(20) NOT NULL DEFAULT ''",
+        'whatsapp_marketing_opt_in' => 'TINYINT NOT NULL DEFAULT 0',
+        'whatsapp_marketing_opt_in_at' => 'DATETIME NULL',
+        'whatsapp_opt_out_at' => 'DATETIME NULL',
+        'updated_at' => 'DATETIME NULL',
     ] as $column => $definition) {
         gawdee_ensure_column($db, 'users', $column, $definition);
     }
     foreach ([
-        'stock_status' => "TEXT NOT NULL DEFAULT 'in_stock'",
-        'sku' => "TEXT NOT NULL DEFAULT ''",
-        'source_id' => "TEXT NOT NULL DEFAULT ''",
-        'source_url' => "TEXT NOT NULL DEFAULT ''",
-        'rating' => 'REAL NOT NULL DEFAULT 0',
-        'review_count' => 'INTEGER NOT NULL DEFAULT 0',
-        'gallery_json' => "TEXT NOT NULL DEFAULT '[]'",
-        'details_json' => "TEXT NOT NULL DEFAULT '{}'",
+        'stock_status' => "VARCHAR(50) NOT NULL DEFAULT 'in_stock'",
+        'sku' => "VARCHAR(100) NOT NULL DEFAULT ''",
+        'source_id' => "VARCHAR(100) NOT NULL DEFAULT ''",
+        'source_url' => "TEXT",
+        'rating' => 'DOUBLE NOT NULL DEFAULT 0',
+        'review_count' => 'INT NOT NULL DEFAULT 0',
+        'gallery_json' => 'LONGTEXT',
+        'details_json' => 'LONGTEXT',
     ] as $column => $definition) {
         gawdee_ensure_column($db, 'products', $column, $definition);
     }
     foreach ([
-        'image' => "TEXT NOT NULL DEFAULT ''",
-        'mobile_image' => "TEXT NOT NULL DEFAULT ''",
-        'video_url' => "TEXT NOT NULL DEFAULT ''",
-        'button_label' => "TEXT NOT NULL DEFAULT ''",
-        'button_url' => "TEXT NOT NULL DEFAULT ''",
+        'image' => "TEXT",
+        'mobile_image' => "TEXT",
+        'video_url' => "TEXT",
+        'button_label' => "VARCHAR(100) NOT NULL DEFAULT ''",
+        'button_url' => "TEXT",
     ] as $column => $definition) {
         gawdee_ensure_column($db, 'cms_sections', $column, $definition);
     }
     foreach ([
-        'featured_image' => "TEXT NOT NULL DEFAULT ''",
-        'category' => "TEXT NOT NULL DEFAULT 'Wellness'",
-        'author' => "TEXT NOT NULL DEFAULT 'Gawdee editorial'",
-        'is_featured' => 'INTEGER NOT NULL DEFAULT 0',
+        'featured_image' => "TEXT",
+        'category' => "VARCHAR(100) NOT NULL DEFAULT 'Wellness'",
+        'author' => "VARCHAR(100) NOT NULL DEFAULT 'Gawdee editorial'",
+        'is_featured' => 'TINYINT NOT NULL DEFAULT 0',
     ] as $column => $definition) {
         gawdee_ensure_column($db, 'blog_posts', $column, $definition);
     }
-    gawdee_ensure_column($db, 'product_reviews', 'updated_at', "TEXT NOT NULL DEFAULT ''");
-    gawdee_ensure_column($db, 'orders', 'user_id', 'INTEGER');
+    gawdee_ensure_column($db, 'product_reviews', 'updated_at', 'DATETIME NULL');
+    gawdee_ensure_column($db, 'orders', 'user_id', 'INT NULL');
     foreach ([
-        'discount' => 'INTEGER NOT NULL DEFAULT 0',
-        'coupon_code' => "TEXT NOT NULL DEFAULT ''",
-        'checkout_token' => "TEXT NOT NULL DEFAULT ''",
-        'fulfillment_mode' => "TEXT NOT NULL DEFAULT 'manual'",
-        'courier_name' => "TEXT NOT NULL DEFAULT ''",
-        'tracking_number' => "TEXT NOT NULL DEFAULT ''",
-        'tracking_url' => "TEXT NOT NULL DEFAULT ''",
-        'inventory_status' => "TEXT NOT NULL DEFAULT 'not_deducted'",
-        'source' => "TEXT NOT NULL DEFAULT 'storefront'",
-        'admin_note' => "TEXT NOT NULL DEFAULT ''",
-        'payment_error' => "TEXT NOT NULL DEFAULT ''",
-        'paid_at' => 'TEXT',
-        'fulfilled_at' => 'TEXT',
-        'cancelled_at' => 'TEXT',
-        'delhivery_waybill' => "TEXT NOT NULL DEFAULT ''",
-        'delhivery_tracking_url' => "TEXT NOT NULL DEFAULT ''",
-        'delhivery_label_url' => "TEXT NOT NULL DEFAULT ''",
-        'delhivery_last_status' => "TEXT NOT NULL DEFAULT ''",
-        'delhivery_last_sync_at' => 'TEXT',
+        'discount' => 'INT NOT NULL DEFAULT 0',
+        'coupon_code' => "VARCHAR(50) NOT NULL DEFAULT ''",
+        'checkout_token' => "VARCHAR(191) NOT NULL DEFAULT ''",
+        'fulfillment_mode' => "VARCHAR(50) NOT NULL DEFAULT 'manual'",
+        'courier_name' => "VARCHAR(100) NOT NULL DEFAULT ''",
+        'tracking_number' => "VARCHAR(100) NOT NULL DEFAULT ''",
+        'tracking_url' => "TEXT",
+        'inventory_status' => "VARCHAR(50) NOT NULL DEFAULT 'not_deducted'",
+        'source' => "VARCHAR(50) NOT NULL DEFAULT 'storefront'",
+        'admin_note' => "TEXT",
+        'payment_error' => "TEXT",
+        'paid_at' => 'DATETIME NULL',
+        'fulfilled_at' => 'DATETIME NULL',
+        'cancelled_at' => 'DATETIME NULL',
+        'delhivery_waybill' => "VARCHAR(100) NOT NULL DEFAULT ''",
+        'delhivery_tracking_url' => "TEXT",
+        'delhivery_label_url' => "TEXT",
+        'delhivery_last_status' => "VARCHAR(100) NOT NULL DEFAULT ''",
+        'delhivery_last_sync_at' => 'DATETIME NULL',
     ] as $column => $definition) {
         gawdee_ensure_column($db, 'orders', $column, $definition);
     }
-    $db->exec('CREATE INDEX IF NOT EXISTS idx_products_category_key ON products(category_key)');
-    $db->exec('CREATE INDEX IF NOT EXISTS idx_testimonials_active ON testimonials(is_active, sort_order, id)');
-    $db->exec('CREATE INDEX IF NOT EXISTS idx_homepage_media_section ON homepage_media(section_key, is_active, sort_order, id)');
-    $db->exec('CREATE INDEX IF NOT EXISTS idx_video_testimonials_active ON video_testimonials(is_active, sort_order, id)');
-    $db->exec('CREATE INDEX IF NOT EXISTS idx_cms_section_items_section ON cms_section_items(section_key, is_active, sort_order, id)');
-    $db->exec('CREATE INDEX IF NOT EXISTS idx_product_reviews_status ON product_reviews(status, product_id, id)');
-    $db->exec('CREATE INDEX IF NOT EXISTS idx_blog_posts_status ON blog_posts(status, published_at, id)');
-    $db->exec('CREATE INDEX IF NOT EXISTS idx_orders_user_id ON orders(user_id)');
-    $db->exec("CREATE UNIQUE INDEX IF NOT EXISTS idx_orders_checkout_token ON orders(checkout_token) WHERE checkout_token != ''");
-    $db->exec('CREATE INDEX IF NOT EXISTS idx_orders_workflow ON orders(status, payment_status, shipment_status, id)');
-    $db->exec('CREATE INDEX IF NOT EXISTS idx_order_status_events_order_id ON order_status_events(order_id, id)');
-    $db->exec('CREATE INDEX IF NOT EXISTS idx_inventory_events_product_id ON inventory_events(product_id, id)');
-    $db->exec('CREATE INDEX IF NOT EXISTS idx_inventory_events_order_id ON inventory_events(order_id, id)');
-    $db->exec('CREATE INDEX IF NOT EXISTS idx_customer_otps_lookup ON customer_otps(phone, purpose, status, id)');
-    $db->exec('CREATE INDEX IF NOT EXISTS idx_customer_otps_rate ON customer_otps(requested_ip_hash, created_at)');
-    $db->exec('CREATE INDEX IF NOT EXISTS idx_notification_queue_delivery ON notification_queue(status, scheduled_at, id)');
-    $db->exec('CREATE INDEX IF NOT EXISTS idx_notification_queue_provider_id ON notification_queue(provider_message_id)');
-    $db->exec('CREATE INDEX IF NOT EXISTS idx_webhook_events_provider ON webhook_events(provider, created_at)');
-    $db->exec('PRAGMA optimize');
+
+    gawdee_ensure_index($db, 'products', 'idx_products_category_key', 'category_key');
+    gawdee_ensure_index($db, 'testimonials', 'idx_testimonials_active', 'is_active, sort_order, id');
+    gawdee_ensure_index($db, 'homepage_media', 'idx_homepage_media_section', 'section_key, is_active, sort_order, id');
+    gawdee_ensure_index($db, 'video_testimonials', 'idx_video_testimonials_active', 'is_active, sort_order, id');
+    gawdee_ensure_index($db, 'cms_section_items', 'idx_cms_section_items_section', 'section_key, is_active, sort_order, id');
+    gawdee_ensure_index($db, 'product_reviews', 'idx_product_reviews_status', 'status, product_id, id');
+    gawdee_ensure_index($db, 'blog_posts', 'idx_blog_posts_status', 'status, published_at, id');
+    gawdee_ensure_index($db, 'orders', 'idx_orders_user_id', 'user_id');
+    gawdee_ensure_index($db, 'orders', 'idx_orders_checkout_token', 'checkout_token', true);
+    gawdee_ensure_index($db, 'orders', 'idx_orders_workflow', 'status, payment_status, shipment_status, id');
+    gawdee_ensure_index($db, 'order_status_events', 'idx_order_status_events_order_id', 'order_id, id');
+    gawdee_ensure_index($db, 'inventory_events', 'idx_inventory_events_product_id', 'product_id, id');
+    gawdee_ensure_index($db, 'inventory_events', 'idx_inventory_events_order_id', 'order_id, id');
+    gawdee_ensure_index($db, 'customer_otps', 'idx_customer_otps_lookup', 'phone, purpose, status, id');
+    gawdee_ensure_index($db, 'customer_otps', 'idx_customer_otps_rate', 'requested_ip_hash, created_at');
+    gawdee_ensure_index($db, 'notification_queue', 'idx_notification_queue_delivery', 'status, scheduled_at, id');
+    gawdee_ensure_index($db, 'notification_queue', 'idx_notification_queue_provider_id', 'provider_message_id');
+    gawdee_ensure_index($db, 'webhook_events', 'idx_webhook_events_provider', 'provider, created_at');
+
+    if ($driver === 'sqlite') {
+        $db->exec('PRAGMA optimize');
+    }
 
     gawdee_seed_defaults($db);
 }
 
 function gawdee_ensure_column(PDO $db, string $table, string $column, string $definition): void
 {
+    $driver = $db->getAttribute(PDO::ATTR_DRIVER_NAME);
+    if ($driver === 'mysql') {
+        $stmt = $db->prepare('SELECT 1 FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ? AND COLUMN_NAME = ?');
+        $stmt->execute([$table, $column]);
+        if ($stmt->fetch()) {
+            return;
+        }
+        $db->exec("ALTER TABLE `{$table}` ADD COLUMN `{$column}` {$definition}");
+        return;
+    }
+
     $columns = $db->query('PRAGMA table_info(' . $table . ')')->fetchAll();
     foreach ($columns as $existing) {
         if (($existing['name'] ?? null) === $column) {
@@ -476,6 +922,32 @@ function gawdee_ensure_column(PDO $db, string $table, string $column, string $de
         }
     }
     $db->exec('ALTER TABLE ' . $table . ' ADD COLUMN ' . $column . ' ' . $definition);
+}
+
+function gawdee_ensure_index(PDO $db, string $table, string $indexName, string $columnsSql, bool $unique = false): void
+{
+    $driver = $db->getAttribute(PDO::ATTR_DRIVER_NAME);
+    if ($driver === 'mysql') {
+        $stmt = $db->prepare('SELECT 1 FROM information_schema.STATISTICS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ? AND INDEX_NAME = ?');
+        $stmt->execute([$table, $indexName]);
+        if ($stmt->fetch()) {
+            return;
+        }
+        $type = $unique ? 'UNIQUE INDEX' : 'INDEX';
+        try {
+            $db->exec("CREATE {$type} `{$indexName}` ON `{$table}`({$columnsSql})");
+        } catch (PDOException $e) {
+            // Ignore duplicate key error if created concurrently
+        }
+        return;
+    }
+
+    $type = $unique ? 'UNIQUE INDEX' : 'INDEX';
+    if ($unique && str_contains($columnsSql, 'WHERE')) {
+        $db->exec("CREATE UNIQUE INDEX IF NOT EXISTS {$indexName} ON {$table}(checkout_token) WHERE checkout_token != ''");
+    } else {
+        $db->exec("CREATE {$type} IF NOT EXISTS {$indexName} ON {$table}({$columnsSql})");
+    }
 }
 
 function gawdee_seed_defaults(PDO $db): void
@@ -543,7 +1015,7 @@ function gawdee_seed_defaults(PDO $db): void
         'site_base_font_size' => '16',
     ];
 
-    $insert = $db->prepare('INSERT OR IGNORE INTO settings (setting_key, setting_value, is_secret) VALUES (?, ?, 0)');
+    $insert = $db->prepare(gawdee_sql($db, 'INSERT OR IGNORE INTO settings (setting_key, setting_value, is_secret) VALUES (?, ?, 0)'));
     foreach ($defaults as $key => $value) {
         $insert->execute([$key, $value]);
     }
@@ -565,7 +1037,7 @@ function gawdee_seed_defaults(PDO $db): void
         ['reels', 'Made with care', 'From nature to your plate', 'A closer look at the products and people behind Gawdee.', '', 1, 100],
         ['newsletter', 'Stay close to goodness', 'Be the first to know!', 'Subscribe for special offers, health tips and updates.', '', 1, 110],
     ];
-    $insertSection = $db->prepare('INSERT OR IGNORE INTO cms_sections (section_key, eyebrow, title, subtitle, body, is_active, sort_order) VALUES (?, ?, ?, ?, ?, ?, ?)');
+    $insertSection = $db->prepare(gawdee_sql($db, 'INSERT OR IGNORE INTO cms_sections (section_key, eyebrow, title, subtitle, body, is_active, sort_order) VALUES (?, ?, ?, ?, ?, ?, ?)'));
     foreach ($sections as $section) {
         $insertSection->execute($section);
     }
@@ -636,11 +1108,11 @@ function gawdee_seed_defaults(PDO $db): void
 function gawdee_seed_products(array $seedProducts): void
 {
     $db = gawdee_db();
-    $insert = $db->prepare(<<<'SQL'
+    $insert = $db->prepare(gawdee_sql($db, <<<'SQL'
 INSERT OR IGNORE INTO products
 (id, slug, name, full_name, category, category_key, tag, price, original_price, weight, image, description, accent)
 VALUES (:id, :slug, :name, :full_name, :category, :category_key, :tag, :price, :original_price, :weight, :image, :description, :accent)
-SQL);
+SQL));
     foreach ($seedProducts as $product) {
         $insert->execute($product);
     }

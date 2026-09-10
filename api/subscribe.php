@@ -14,7 +14,8 @@ try {
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         throw new RuntimeException('Enter a valid email address.');
     }
-    gawdee_db()->prepare('INSERT OR IGNORE INTO subscribers (email) VALUES (?)')->execute([$email]);
+    $db = gawdee_db();
+    $db->prepare(gawdee_sql($db, 'INSERT OR IGNORE INTO subscribers (email) VALUES (?)'))->execute([$email]);
     gawdee_json_response(['ok' => true, 'message' => 'Thank you! Your wellness updates are on the way.']);
 } catch (Throwable $exception) {
     gawdee_json_response(['ok' => false, 'message' => $exception->getMessage()], 422);

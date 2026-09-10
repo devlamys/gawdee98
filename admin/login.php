@@ -39,6 +39,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             session_regenerate_id(true);
             $_SESSION['admin_user_id'] = (int) gawdee_db()->lastInsertId();
         } else {
+            $maxAttempts = max(1, (int) gawdee_env('ADMIN_MAX_LOGIN_ATTEMPTS', '5'));
+            $lockoutSeconds = max(5, (int) gawdee_env('ADMIN_LOCKOUT_SECONDS', '60'));
+
             $lockedUntil = (int) ($_SESSION['login_locked_until'] ?? 0);
             if ($lockedUntil > time()) {
                 throw new RuntimeException('Too many attempts. Try again in ' . ($lockedUntil - time()) . ' seconds.');
@@ -48,8 +51,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $user = $statement->fetch();
             if (!$user || !password_verify($password, $user['password_hash'])) {
                 $_SESSION['login_attempts'] = (int) ($_SESSION['login_attempts'] ?? 0) + 1;
-                if ($_SESSION['login_attempts'] >= 5) {
-                    $_SESSION['login_locked_until'] = time() + 60;
+                if ($_SESSION['login_attempts'] >= $maxAttempts) {
+                    $_SESSION['login_locked_until'] = time() + $lockoutSeconds;
                     $_SESSION['login_attempts'] = 0;
                 }
                 throw new RuntimeException('Email or password is incorrect.');

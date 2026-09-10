@@ -704,7 +704,8 @@ function gawdee_whatsapp_verify_webhook(string $rawBody, string $signature): boo
 
 function gawdee_record_webhook_event(string $provider, string $eventKey, string $eventType, string $rawBody): bool
 {
-    $statement = gawdee_db()->prepare('INSERT OR IGNORE INTO webhook_events (provider, event_key, event_type, payload_hash) VALUES (?, ?, ?, ?)');
+    $db = gawdee_db();
+    $statement = $db->prepare(gawdee_sql($db, 'INSERT OR IGNORE INTO webhook_events (provider, event_key, event_type, payload_hash) VALUES (?, ?, ?, ?)'));
     $statement->execute([$provider, mb_substr($eventKey, 0, 255), mb_substr($eventType, 0, 120), hash('sha256', $rawBody)]);
     return $statement->rowCount() === 1;
 }
@@ -795,26 +796,34 @@ function gawdee_process_notification_queue(int $limit = 20): array
                 ->execute([$sent['message_id'], (int) $row['id']]);
             $result['sent']++;
         } catch (Throwable $error) {
-            gawdee_db()->prepare("UPDATE notification_queue SET status=CASE WHEN attempts+1 >= 5 THEN 'failed' ELSE 'retry' END, attempts=attempts+1, error_message=?, scheduled_at=datetime('now', '+' || MIN(60, (attempts+1)*(attempts+1)*5) || ' minutes'), updated_at=CURRENT_TIMESTAMP WHERE id=?")
-                ->execute([mb_substr($error->getMessage(), 0, 1000), (int) $row['id']]);
+            $db = gawdee_db();
+            $driver = $db->getAttribute(PDO::ATTR_DRIVER_NAME);
+            if ($driver === 'mysql') {
+                $db->prepare("UPDATE notification_queue SET status=CASE WHEN attempts+1 >= 5 THEN 'failed' ELSE 'retry' END, attempts=attempts+1, error_message=?, scheduled_at=DATE_ADD(NOW(), INTERVAL LEAST(60, (attempts+1)*(attempts+1)*5) MINUTE), updated_at=CURRENT_TIMESTAMP WHERE id=?")
+                    ->execute([mb_substr($error->getMessage(), 0, 1000), (int) $row['id']]);
+            } else {
+                $db->prepare("UPDATE notification_queue SET status=CASE WHEN attempts+1 >= 5 THEN 'failed' ELSE 'retry' END, attempts=attempts+1, error_message=?, scheduled_at=datetime('now', '+' || MIN(60, (attempts+1)*(attempts+1)*5) || ' minutes'), updated_at=CURRENT_TIMESTAMP WHERE id=?")
+                    ->execute([mb_substr($error->getMessage(), 0, 1000), (int) $row['id']]);
+            }
             $result['failed']++;
         }
     }
     return $result;
 }
 
-function gawdee_queue_marketing_broadcast(string $templateName, array $parameters = []): int
+function gawdee_queue_marketing_campaign(string $templateName, array $parameters = []): int
 {
-    if (gawdee_setting('whatsapp_marketing_enabled', '0') !== '1') {
-        throw new RuntimeException('Enable consent-based WhatsApp marketing before queuing a campaign.');
+    if (gawdee_setting('whatsapp_cloud_enabled', '0') !== '1' || gawdee_setting('whatsapp_marketing_enabled', '0') !== '1') {
+        throw new RuntimeException('WhatsApp marketing is currently disabled.');
     }
     if (!preg_match('/^[a-z0-9_]{1,512}$/', $templateName)) {
         throw new RuntimeException('Enter a valid approved WhatsApp marketing template name.');
     }
-    $customers = gawdee_db()->query("SELECT id, phone FROM users WHERE role='customer' AND whatsapp_marketing_opt_in=1 AND whatsapp_opt_out_at IS NULL AND phone!='' ORDER BY id")->fetchAll();
+    $db = gawdee_db();
+    $customers = $db->query("SELECT id, phone FROM users WHERE role='customer' AND whatsapp_marketing_opt_in=1 AND whatsapp_opt_out_at IS NULL AND phone!='' ORDER BY id")->fetchAll();
     $inserted = 0;
     $campaign = hash('sha256', $templateName . '|' . json_encode($parameters) . '|' . date('Y-m-d-H-i'));
-    $statement = gawdee_db()->prepare("INSERT OR IGNORE INTO notification_queue (user_id, channel, notification_type, recipient, template_name, language, variables_json, dedupe_key) VALUES (?, 'whatsapp', 'marketing', ?, ?, ?, ?, ?)");
+    $statement = $db->prepare(gawdee_sql($db, "INSERT OR IGNORE INTO notification_queue (user_id, channel, notification_type, recipient, template_name, language, variables_json, dedupe_key) VALUES (?, 'whatsapp', 'marketing', ?, ?, ?, ?, ?)"));
     foreach ($customers as $customer) {
         $phone = gawdee_normalize_phone((string) $customer['phone']);
         if ($phone === '') {
@@ -830,7 +839,13 @@ function gawdee_customer_by_identity(string $identity): ?array
 {
     $email = strtolower(trim($identity));
     $phone = gawdee_normalize_phone($identity);
-    $statement = gawdee_db()->prepare("SELECT * FROM users WHERE role='customer' AND (LOWER(email)=? OR (? != '' AND ('91' || substr(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(phone, ' ', ''), '-', ''), '+', ''), '(', ''), ')', ''), -10))=?)) LIMIT 1");
+    $db = gawdee_db();
+    $driver = $db->getAttribute(PDO::ATTR_DRIVER_NAME);
+    if ($driver === 'mysql') {
+        $statement = $db->prepare("SELECT * FROM users WHERE role='customer' AND (LOWER(email)=? OR (? != '' AND (CONCAT('91', RIGHT(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(phone, ' ', ''), '-', ''), '+', ''), '(', ''), ')', ''), 10))=?))) LIMIT 1");
+    } else {
+        $statement = $db->prepare("SELECT * FROM users WHERE role='customer' AND (LOWER(email)=? OR (? != '' AND ('91' || substr(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(phone, ' ', ''), '-', ''), '+', ''), '(', ''), ')', ''), -10))=?)) LIMIT 1");
+    }
     $statement->execute([$email, $phone, $phone]);
     return $statement->fetch() ?: null;
 }
@@ -846,21 +861,31 @@ function gawdee_whatsapp_request_otp(string $identity, string $ipAddress = ''): 
         return false;
     }
     $phone = gawdee_normalize_phone((string) $customer['phone']);
-    $rate = gawdee_db()->prepare("SELECT COUNT(*) FROM customer_otps WHERE (phone=? OR requested_ip_hash=?) AND created_at >= datetime('now','-15 minutes')");
+    $db = gawdee_db();
+    $driver = $db->getAttribute(PDO::ATTR_DRIVER_NAME);
+    if ($driver === 'mysql') {
+        $rate = $db->prepare("SELECT COUNT(*) FROM customer_otps WHERE (phone=? OR requested_ip_hash=?) AND created_at >= (NOW() - INTERVAL 15 MINUTE)");
+    } else {
+        $rate = $db->prepare("SELECT COUNT(*) FROM customer_otps WHERE (phone=? OR requested_ip_hash=?) AND created_at >= datetime('now','-15 minutes')");
+    }
     $rate->execute([$phone, $ipHash]);
     if ((int) $rate->fetchColumn() >= 5) {
         throw new RuntimeException('Too many OTP requests. Please wait 15 minutes and try again.');
     }
-    gawdee_db()->prepare("UPDATE customer_otps SET status='expired' WHERE user_id=? AND purpose='login' AND status='pending'")->execute([(int) $customer['id']]);
+    $db->prepare("UPDATE customer_otps SET status='expired' WHERE user_id=? AND purpose='login' AND status='pending'")->execute([(int) $customer['id']]);
     $code = (string) random_int(100000, 999999);
-    $statement = gawdee_db()->prepare("INSERT INTO customer_otps (user_id, phone, purpose, code_hash, expires_at, requested_ip_hash) VALUES (?, ?, 'login', ?, datetime('now','+10 minutes'), ?)");
+    if ($driver === 'mysql') {
+        $statement = $db->prepare("INSERT INTO customer_otps (user_id, phone, purpose, code_hash, expires_at, requested_ip_hash) VALUES (?, ?, 'login', ?, (NOW() + INTERVAL 10 MINUTE), ?)");
+    } else {
+        $statement = $db->prepare("INSERT INTO customer_otps (user_id, phone, purpose, code_hash, expires_at, requested_ip_hash) VALUES (?, ?, 'login', ?, datetime('now','+10 minutes'), ?)");
+    }
     $statement->execute([(int) $customer['id'], $phone, password_hash($code, PASSWORD_DEFAULT), $ipHash]);
-    $otpId = (int) gawdee_db()->lastInsertId();
+    $otpId = (int) $db->lastInsertId();
     try {
         gawdee_whatsapp_send_template($phone, gawdee_setting('whatsapp_template_otp', 'gawdee_login_otp'), [$code], gawdee_setting('whatsapp_language', 'en_US'), true);
         return true;
     } catch (Throwable $error) {
-        gawdee_db()->prepare("UPDATE customer_otps SET status='failed' WHERE id=?")->execute([$otpId]);
+        $db->prepare("UPDATE customer_otps SET status='failed' WHERE id=?")->execute([$otpId]);
         throw $error;
     }
 }

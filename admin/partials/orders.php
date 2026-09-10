@@ -7,7 +7,18 @@ $orderFilters = [
     'fulfillment_mode' => trim((string) ($_GET['fulfillment_mode'] ?? '')),
 ];
 $orders = gawdee_admin_orders($orderFilters);
-$orderMetrics = gawdee_db()->query(<<<'SQL'
+$db = gawdee_db();
+$orderMetrics = ($db->getAttribute(PDO::ATTR_DRIVER_NAME) === 'mysql')
+    ? $db->query(<<<'SQL'
+SELECT
+    COUNT(*) AS total,
+    SUM(CASE WHEN DATE(created_at)=CURDATE() THEN 1 ELSE 0 END) AS today,
+    SUM(CASE WHEN status IN ('pending','on_hold') OR payment_status IN ('initializing','failed') THEN 1 ELSE 0 END) AS attention,
+    SUM(CASE WHEN status IN ('processing','packed') THEN 1 ELSE 0 END) AS fulfillment,
+    SUM(CASE WHEN payment_status='paid' THEN total ELSE 0 END) AS paid_revenue
+FROM orders
+SQL)->fetch() ?: []
+    : $db->query(<<<'SQL'
 SELECT
     COUNT(*) AS total,
     SUM(CASE WHEN date(created_at)=date('now') THEN 1 ELSE 0 END) AS today,

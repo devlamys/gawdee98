@@ -741,11 +741,13 @@ $navGroups = [
 ];
 $viewTitles += ['storefront'=>'Collections & combos', 'site-design'=>'Brand & pages'];
 
+$db = gawdee_db();
+$todaySql = ($db->getAttribute(PDO::ATTR_DRIVER_NAME) === 'mysql') ? "SELECT COUNT(*) FROM orders WHERE DATE(created_at)=CURDATE()" : "SELECT COUNT(*) FROM orders WHERE date(created_at)=date('now')";
 $stats = [
-    'orders' => (int) gawdee_db()->query('SELECT COUNT(*) FROM orders')->fetchColumn(),
-    'revenue' => (int) gawdee_db()->query("SELECT COALESCE(SUM(total),0) FROM orders WHERE payment_status='paid'")->fetchColumn(),
-    'today' => (int) gawdee_db()->query("SELECT COUNT(*) FROM orders WHERE date(created_at)=date('now')")->fetchColumn(),
-    'attention' => (int) gawdee_db()->query("SELECT COUNT(*) FROM orders WHERE status IN ('pending','on_hold') OR payment_status IN ('initializing','failed')")->fetchColumn(),
+    'orders' => (int) $db->query('SELECT COUNT(*) FROM orders')->fetchColumn(),
+    'revenue' => (int) $db->query("SELECT COALESCE(SUM(total),0) FROM orders WHERE payment_status='paid'")->fetchColumn(),
+    'today' => (int) $db->query($todaySql)->fetchColumn(),
+    'attention' => (int) $db->query("SELECT COUNT(*) FROM orders WHERE status IN ('pending','on_hold') OR payment_status IN ('initializing','failed')")->fetchColumn(),
 ];
 $adminNameParts = preg_split('/\s+/', trim((string) $admin['name'])) ?: [];
 $adminInitials = strtoupper(substr((string) ($adminNameParts[0] ?? 'A'), 0, 1) . substr((string) ($adminNameParts[1] ?? ''), 0, 1));

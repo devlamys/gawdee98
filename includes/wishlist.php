@@ -42,7 +42,8 @@ function gawdee_wishlist_set(array $ids, bool $saved): array
     $customer = gawdee_customer();
     if ($customer) {
         if ($saved) {
-            gawdee_db()->prepare('INSERT INTO saved_products(user_id,item_key,product_ids) VALUES(?,?,?) ON CONFLICT(user_id,item_key) DO NOTHING')->execute([(int)$customer['id'],$key,json_encode($ids,JSON_THROW_ON_ERROR)]);
+            $db = gawdee_db();
+            $db->prepare(gawdee_sql($db, 'INSERT OR IGNORE INTO saved_products(user_id,item_key,product_ids) VALUES(?,?,?)'))->execute([(int)$customer['id'],$key,json_encode($ids,JSON_THROW_ON_ERROR)]);
         } else {
             gawdee_db()->prepare('DELETE FROM saved_products WHERE user_id=? AND item_key=?')->execute([(int)$customer['id'],$key]);
         }

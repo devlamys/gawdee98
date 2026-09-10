@@ -3,6 +3,8 @@ Thumbs.db
 *.log
 .idea/
 .vscode/
+.env
+!.env.example
 storage/*.sqlite*
 storage/.app_key
 assets/uploads/*
@@ -10,3 +12,4 @@ assets/uploads/*
 !assets/uploads/banners/
 assets/uploads/banners/*
 !assets/uploads/banners/.gitkeep
+

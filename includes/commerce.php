@@ -463,13 +463,22 @@ function gawdee_set_manual_shipment(int $orderId, string $courierName, string $t
 function gawdee_expire_stale_payment_orders(int $minutes = 45): int
 {
     $minutes = min(1440, max(15, $minutes));
-    $statement = gawdee_db()->prepare("SELECT id FROM orders WHERE payment_method='razorpay' AND payment_status IN ('initializing','pending') AND created_at <= datetime('now', ?)");
-    $statement->execute(['-' . $minutes . ' minutes']);
+    $db = gawdee_db();
+    $driver = $db->getAttribute(PDO::ATTR_DRIVER_NAME);
+
+    if ($driver === 'mysql') {
+        $statement = $db->prepare("SELECT id FROM orders WHERE payment_method='razorpay' AND payment_status IN ('initializing','pending') AND created_at <= (NOW() - INTERVAL ? MINUTE)");
+        $statement->execute([$minutes]);
+    } else {
+        $statement = $db->prepare("SELECT id FROM orders WHERE payment_method='razorpay' AND payment_status IN ('initializing','pending') AND created_at <= datetime('now', ?)");
+        $statement->execute(['-' . $minutes . ' minutes']);
+    }
+
     $expired = 0;
     foreach ($statement->fetchAll() as $row) {
         $orderId = (int) $row['id'];
         gawdee_release_order_inventory($orderId, 'released');
-        gawdee_db()->prepare("UPDATE orders SET payment_status='expired', status='cancelled', shipment_status='cancelled', payment_error='Payment window expired.', cancelled_at=CURRENT_TIMESTAMP, updated_at=CURRENT_TIMESTAMP WHERE id=? AND payment_status!='paid'")
+        $db->prepare("UPDATE orders SET payment_status='expired', status='cancelled', shipment_status='cancelled', payment_error='Payment window expired.', cancelled_at=CURRENT_TIMESTAMP, updated_at=CURRENT_TIMESTAMP WHERE id=? AND payment_status!='paid'")
             ->execute([$orderId]);
         gawdee_record_order_event($orderId, 'cancelled', 'Payment window expired', 'No payment was captured. Reserved inventory was returned to the catalogue.');
         $expired++;
