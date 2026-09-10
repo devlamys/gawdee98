@@ -38,6 +38,9 @@ require __DIR__ . '/includes/header.php';
 // TEMPORARY TRIAL: animated hero ported from demo animated_carousel/index.html (Style 01).
 // Set to false to restore the original banner/poster hero instantly.
 $useAnimatedHero = true;
+// TEMPORARY TRIAL: compact inline trust/values design (same icon/title/subtitle).
+// Set to false to restore the original .sf-values design instantly.
+$useNewValuesDesign = true;
 foreach ($homepageSections as $key => $section):
     if (!(int) $section['is_active'] && !($key === 'hero' && $useAnimatedHero))
         continue;
@@ -98,15 +101,33 @@ foreach ($homepageSections as $key => $section):
                         $homeTitle($section, 'title-' . $key);
                     else: ?>
                         <h2 class="sr-only" id="title-<?= $key ?>"><?= htmlspecialchars($section['title']) ?></h2><?php endif; ?>
-                    <div class="sf-values"><?php foreach ($items as $item): ?>
-                            <article><span class="sf-value-icon"><?php if ($item['image']):
-                                gawdee_artwork($item['image'], $item['image_crop'] ?? '');
-                            else: ?><i class="ph <?= htmlspecialchars($item['icon']) ?>"
+                    <?php if (!empty($useNewValuesDesign)): ?>
+                    <div class="gx-values">
+                        <?php foreach ($items as $item): ?>
+                            <article class="gx-value">
+                                <span class="gx-value-icon"><?php if ($item['image']):
+                                    gawdee_artwork($item['image'], $item['image_crop'] ?? '');
+                                else: ?><i class="ph <?= htmlspecialchars($item['icon']) ?>"
+                                            aria-hidden="true"></i><?php endif; ?></span>
+                                <span class="gx-value-text">
+                                    <h3><?= nl2br(htmlspecialchars($item['title'])) ?></h3>
+                                    <p><?= htmlspecialchars($item['subtitle']) ?></p>
+                                </span>
+                            </article><?php endforeach; ?>
+                    </div>
+                    <?php else: ?>
+                    <div class="sf-values">
+                        <?php foreach ($items as $item): ?>
+                            <article>
+                                <span class="sf-value-icon"><?php if ($item['image']):
+                                    gawdee_artwork($item['image'], $item['image_crop'] ?? '');
+                                else: ?><i class="ph <?= htmlspecialchars($item['icon']) ?>"
                                             aria-hidden="true"></i><?php endif; ?></span>
                                 <h3><?= nl2br(htmlspecialchars($item['title'])) ?></h3>
                                 <p><?= htmlspecialchars($item['subtitle']) ?></p>
                             </article><?php endforeach; ?>
                     </div>
+                    <?php endif; ?>
                 </div>
             </section>
             <?php break;
@@ -116,12 +137,26 @@ foreach ($homepageSections as $key => $section):
                 break; ?>
             <section class="sf-section" id="farms" aria-labelledby="title-farms">
                 <div class="sf-container"><?php $homeTitle($section, 'title-farms'); ?>
+                    <?php if (!empty($useNewValuesDesign)): ?>
+                    <div class="gx-values">
+                        <?php foreach ($items as $item): ?>
+                            <article class="gx-value">
+                                <span class="gx-value-icon"><i class="ph <?= htmlspecialchars($item['icon']) ?>"
+                                            aria-hidden="true"></i></span>
+                                <span class="gx-value-text">
+                                    <h3><?= htmlspecialchars($item['title']) ?></h3>
+                                    <p><?= htmlspecialchars($item['subtitle']) ?></p>
+                                </span>
+                            </article><?php endforeach; ?>
+                    </div>
+                    <?php else: ?>
                     <div class="sf-values"><?php foreach ($items as $item): ?>
                             <article><i class="ph <?= htmlspecialchars($item['icon']) ?>" aria-hidden="true"></i>
                                 <h3><?= htmlspecialchars($item['title']) ?></h3>
                                 <p><?= htmlspecialchars($item['subtitle']) ?></p>
                             </article><?php endforeach; ?>
                     </div>
+                    <?php endif; ?>
                 </div>
             </section>
             <?php break;

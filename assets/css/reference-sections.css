@@ -131,7 +131,7 @@
   padding: 0 11px;
   border-right: 1px solid #ffffff60;
   white-space: nowrap;
-  font-size: clamp(10px, 0.86vw, 14px);
+  font-size: clamp(10px, 0.86vw, 12px);
   line-height: 1.3;
 }
 .sf-reference-promo li:first-child {
@@ -142,7 +142,7 @@
   padding-right: 0;
 }
 .sf-reference-promo li i {
-  font-size: 21px;
+  font-size: 17px;
 }
 .sf-reference-promo__tagline {
   font:
@@ -286,7 +286,7 @@
 .sf-trust-strip .sf-value-icon > i,
 .sf-trust-strip .sf-values article > i,
 .sf-section.sf-reference.sf-trust-strip .sf-value-icon > i {
-  color: #009A84;
+  color: #009a84;
 }
 .sf-reference .sf-values {
   display: grid;
@@ -320,7 +320,7 @@
 }
 .sf-reference .sf-value-icon > i {
   font-size: 48px;
-  color: #009A84;
+  color: #009a84;
 }
 .sf-reference .sf-values h3 {
   font-family: "DM Sans", sans-serif;
@@ -517,7 +517,7 @@
 .sf-reference .sf-product__actions button {
   min-height: 44px;
   border-radius: 11px;
-  background: #005846;
+  background: var(--gx-ink);
   font-size: clamp(12px, 0.95vw, 15px);
   font-family: "DM Sans", sans-serif;
 }
@@ -603,7 +603,7 @@
   bottom: -54px;
   color: #fff;
   border: 0;
-  background: #00634d;
+  background: var(--gx-ink);
 }
 .sf-combos .sf-benefit-line {
   justify-content: flex-start;
@@ -974,14 +974,14 @@
     padding: 6px 9px;
   }
   .sf-reference-promo li {
-    font-size: 10px;
+    font-size: 9px;
     padding-inline: 8px;
   }
   .sf-reference-promo li:nth-child(n + 3):not(:last-child) {
     display: none;
   }
   .sf-reference-promo li i {
-    font-size: 17px;
+    font-size: 15px;
   }
   .sf-home .sf-hero img {
     min-height: 400px;
@@ -1089,7 +1089,7 @@
     padding-inline: 8px;
   }
   .sf-reference-promo li {
-    font-size: 10px;
+    font-size: 9px;
     padding: 0 8px;
   }
   .sf-reference-promo li:nth-child(2) {
