@@ -1190,11 +1190,19 @@ function gawdee_setting(string $key, string $default = ''): string
 function gawdee_set_setting(string $key, string $value, bool $secret = false): void
 {
     $stored = $secret ? gawdee_encrypt($value) : $value;
-    $statement = gawdee_db()->prepare(<<<'SQL'
+    $db = gawdee_db();
+    $sql = ($db->getAttribute(PDO::ATTR_DRIVER_NAME) === 'mysql')
+        ? <<<'SQL'
+INSERT INTO settings (setting_key, setting_value, is_secret, updated_at)
+VALUES (?, ?, ?, CURRENT_TIMESTAMP)
+ON DUPLICATE KEY UPDATE setting_value = VALUES(setting_value), is_secret = VALUES(is_secret), updated_at = CURRENT_TIMESTAMP
+SQL
+        : <<<'SQL'
 INSERT INTO settings (setting_key, setting_value, is_secret, updated_at)
 VALUES (?, ?, ?, CURRENT_TIMESTAMP)
 ON CONFLICT(setting_key) DO UPDATE SET setting_value = excluded.setting_value, is_secret = excluded.is_secret, updated_at = CURRENT_TIMESTAMP
-SQL);
+SQL;
+    $statement = $db->prepare($sql);
     $statement->execute([$key, $stored, $secret ? 1 : 0]);
 }
 

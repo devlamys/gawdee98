@@ -20,7 +20,11 @@ $check(count(gawdee_testimonials()) >= 4, 'homepage testimonial CMS');
 $check(count(gawdee_homepage_media('reels')) >= 3, 'homepage media CMS');
 $offerSection = gawdee_section('offer');
 $check($offerSection['image'] !== '' && $offerSection['mobile_image'] !== '', 'CMS-managed offer artwork');
-$blogColumns = array_column(gawdee_db()->query('PRAGMA table_info(blog_posts)')->fetchAll(), 'name');
+$db = gawdee_db();
+$driver = $db->getAttribute(PDO::ATTR_DRIVER_NAME);
+$blogColumns = ($driver === 'mysql')
+    ? array_column($db->query("SELECT COLUMN_NAME AS name FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'blog_posts'")->fetchAll(), 'name')
+    : array_column($db->query('PRAGMA table_info(blog_posts)')->fetchAll(), 'name');
 $check(in_array('featured_image', $blogColumns, true) && in_array('is_featured', $blogColumns, true), 'image-led blog publishing schema');
 
 gawdee_set_setting('qa_secret', 'temporary-secret', true);

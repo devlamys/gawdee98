@@ -5,7 +5,7 @@ $hour = (int) date('G');
 $greeting = $hour < 12 ? 'Good morning' : ($hour < 18 ? 'Good afternoon' : 'Good evening');
 $lowStockThreshold = max(1, (int) gawdee_setting('low_stock_threshold', '12'));
 $dashboardMetrics = ($db->getAttribute(PDO::ATTR_DRIVER_NAME) === 'mysql')
-    ? $db->query(<<<'SQL'
+    ? (($db->query(<<<'SQL'
 SELECT
     COUNT(*) AS total_orders,
     SUM(CASE WHEN payment_status='paid' THEN total ELSE 0 END) AS lifetime_revenue,
@@ -16,8 +16,8 @@ SELECT
     SUM(CASE WHEN status IN ('processing','packed') THEN 1 ELSE 0 END) AS to_fulfil,
     ROUND(AVG(CASE WHEN payment_status='paid' THEN total END)) AS average_order
 FROM orders
-SQL)->fetch() ?: []
-    : $db->query(<<<'SQL'
+SQL)->fetch()) ?: [])
+    : (($db->query(<<<'SQL'
 SELECT
     COUNT(*) AS total_orders,
     SUM(CASE WHEN payment_status='paid' THEN total ELSE 0 END) AS lifetime_revenue,
@@ -28,7 +28,7 @@ SELECT
     SUM(CASE WHEN status IN ('processing','packed') THEN 1 ELSE 0 END) AS to_fulfil,
     ROUND(AVG(CASE WHEN payment_status='paid' THEN total END)) AS average_order
 FROM orders
-SQL)->fetch() ?: [];
+SQL)->fetch()) ?: []);
 
 $monthRevenue = (int) ($dashboardMetrics['month_revenue'] ?? 0);
 $lastMonthRevenue = (int) ($dashboardMetrics['last_month_revenue'] ?? 0);
